@@ -1,0 +1,44 @@
+--------------------------sáb 12 oct 2013 22:06:27 COT 
+
+2) que es resumeneeprom , cada habitación tiene uno ¿?
+8) cual es la programación de los extractores ¿?
+9) que byte poseen los dispositivos¿?
+10) que es la tarjeta de sensado¿?
+11) cual es la secuencia de predido y apagado de extractores¿?
+12) como responde al sensado y a las variables (que trama devuelve)¿?
+13) para que se usa & 0x000000FF
+14) cuales son los estados de la eeprom
+15) que se hace con el estado de la trama 
+16) porque una longitud de datos de 10 bytes en la decodificación de una trama¿?
+17) la eeprom de que dispositivos me da datos y que datos contiene cada dispositivo
+18) el sensor devuelve información en la trama del aireacondicionado solamente ¿?
+19)
+20)
+
+Solucionados 
+4) TRef es hilo(Thread) de referencia ¿?=> Es temperatura de referencia
+7) la temperatura de referencia es para cada habitación una diferente o todas por igual ¿? => es para cada habitación una diferente.
+5) cada habitación tiene una tramadelegate ¿? => la clase tramadelegate se utiliza para codificar, decodificar las tramas y verificar que los datos tanto entrantes como salientes formen bien las tramas para determinar posibles fallos en el envio.
+6) la tramadelegate manda datos de una abitación orgen a una destino¿?=> lo que determina es el origen y destino de los datos enviados y recibidos
+3) las habitaciones cada una tiene su estado ¿?=> el estado determina las condiciones , tanto de temperatura como de humedad, etc...
+1) las habitaciones tienen control sobre las otras ¿?=> cada habitación tiene sus propias caracteristicas que se controlan independientemente.
+
+
+Nota : lo mas importante es saber el proceso jerarquico de como se efectuan cada una de las acciones.
+
+
+//-------------------------------------------------------------------------
+
+
+Virtual Serial Port 
+~$ socat -d -d pty,raw,echo=0 pty,raw,echo=0
+
+~$ ln -l
+
+~$ cat /dev/pts/1
+
+~$ echo "Hello Worlda" > /dev/pts/2
+
+~$ 
+
+

@@ -1,0 +1,23 @@
+sistema
+	habitaciones
+		dispositivos
+			calefactores
+				-datos
+			extractores
+				-datos
+			puertas
+				-datos
+			bombillos
+				-datos
+			aireacondicionadores
+				-datos
+			persianas
+				-datos
+				
+ejecución funciones
+	temporizar funciones {tiempo encendido:30,intervalo:5min,nivel:medio,estado:activada}
+guardar datos
+cargar datos
+control regulaciones
+refrescar {habitaciones,dispositivos}
+cada minuto se toman datos

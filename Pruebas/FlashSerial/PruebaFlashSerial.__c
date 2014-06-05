@@ -1,0 +1,14 @@
+[Settings]
+Target=PIC16F877A
+Active Compiler=BoostC
+Active Directory=C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\
+Active Config=Debug
+Last ExtIdx=7
+Last Dir=C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\
+Last Ext=lib
+Config=1
+[Files]
+Count=3
+File0=PruebaFlashSerial.c
+File1=eeprom.h
+File2=eeprom.pic16.lib

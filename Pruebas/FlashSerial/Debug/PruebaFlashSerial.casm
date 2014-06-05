@@ -1,0 +1,2527 @@
+;/////////////////////////////////////////////////////////////////////////////////
+;// Code Generator: BoostC Compiler - http://www.sourceboost.com
+;// Version       : 7.04
+;// License Type  : Lite License (Unregistered)
+;// Limitations   : PIC12,PIC16 max code size:2048 words, max RAM banks:2, Non commercial use only
+;/////////////////////////////////////////////////////////////////////////////////
+
+#ifndef _Config_h
+#define _Config_h
+
+#include <string.h>
+//#include "eeprom.h"
+
+#pragma CLOCK_FREQ 20000000
+#pragma DATA _CONFIG, _PWRTE_ON & _BODEN_OFF & _WDT_OFF & _LVP_OFF & _CPD_OFF & _DEBUG_OFF & _HS_OSC & _CP_OFF
+
+
+unsigned short sw_SPBRG@0x47;	// define location for the emulated SSPCON1
+unsigned short sw_RCREG@0x48;	// define location for the emulated SSPCON2
+unsigned short sw_TXREG@0x49;	// define location for the emulated SSPSTAT
+unsigned short sw_TXSTA@0x4A;	// define location for the emulated SSPBUF
+unsigned short sw_RCSTA@0x4B;	// define location for the emulated SSPADD
+unsigned short sw_TXIF_PIR@0x4C;// define location for the emulated TXIF_PIR1
+unsigned short sw_RCIF_PIR@0x4C;// define location for the emulated RCIF_PIR1
+
+// Sample PIC16F87x defaults for software emulated USART support
+#define TX_PORT		0x07
+#define TX_TRIS		0x87
+#define TX_BIT		6
+#define RX_PORT		0x07
+#define RX_TRIS		0x87
+#define RX_BIT		7
+#define e_SPBRG		0x99
+#define e_RCREG		0x1a
+#define e_TXREG		0x019
+#define e_TXSTA		0x98
+#define e_RCSTA		0x18
+#define e_TXIF_PIR	0x0c
+#define e_RCIF_PIR	0x0c
+#define e_TXIF_BIT	4
+#define e_RCIF_BIT	5
+#define MODE		(USART_reset_wdt | USART_HW)
+
+//#define bit_time 86	// 115200 baud at 40MHz
+#define bit_time 520	// 9600 baud at 20MHz
+	
+#include <rs232_driver.h>
+
+
+
+//0(LSB),1,2,..n(MSB)
+//pines para calefactores. 4
+#define pin_C1_0 portb.0 
+#define pin_C1_1 portb.1
+#define pin_C2_0 portb.2
+#define pin_C2_1 portb.3	
+
+
+//pines para extractores 8
+#define pin_E1_0 portd.4
+#define pin_E1_1 portd.5
+#define pin_E1_2 portd.6
+#define pin_E1_3 portd.7
+
+
+#define pin_E2_0 portd.0
+#define pin_E2_1 portd.1
+#define pin_E2_2 portd.2
+#define pin_E2_3 portd.3
+
+//pines para Aire Acondicionado 4
+#define pin_AA_0 portb.4 //
+#define pin_AA_1 portb.5
+#define pin_AA_2 portb.6
+#define pin_AA_3 portb.7
+
+//pines para persiana	2
+#define pin_per_0 portc.4
+#define pin_per_1 portc.5
+
+//pines para bombillos	7
+#define port_Bomb porta 
+#define port_Bomb6 porte.0
+#define port_Bomb7 porte.1
+
+//pin para puerta	1
+#define pin_puerta porte.2
+
+//pin ind recepcion de trama
+#define pin_indRecTrama portc.2
+
+//pines para sensor
+#define DATA_SHT 	portc.0		//señal de datos
+#define SCK_SHT 	portc.1		//señal de reloj
+#define TRIS_DATA 	trisc.0
+#define TRIS_SCK 	trisc.1
+
+
+/**********TRIS*************/
+//0(LSB),1,2,..n(MSB)
+//pines para calefactores. 4
+#define tris_C1_0 trisb.0
+#define tris_C1_1 trisb.1
+#define tris_C2_0 trisb.2
+#define tris_C2_1 trisb.3	
+
+
+
+//pines para extractores 8
+#define tris_E1_0 trisd.4
+#define tris_E1_1 trisd.5
+#define tris_E1_2 trisd.6
+#define tris_E1_3 trisd.7
+
+#define tris_E2_0 trisd.0
+#define tris_E2_1 trisd.1 	
+#define tris_E2_2 trisd.2
+#define tris_E2_3 trisd.3
+
+//pines para Aire Acondicionado 4
+#define tris_AA_0 trisb.4
+#define tris_AA_1 trisb.5
+#define tris_AA_2 trisb.6
+#define tris_AA_3 trisb.7
+
+//pines para persiana
+#define tris_per_0 trisc.4
+#define tris_per_1 trisc.5
+
+//pines para bombillos
+#define tris_port_Bomb trisa 
+#define tris_port_Bomb6 trise.0
+#define tris_port_Bomb7 trise.1
+
+//pin para puerta
+#define tris_puerta trise.2
+
+//pin para indicar recepcion de trama
+#define tris_indRecTrama trisc.2
+ 
+ 
+
+
+
+
+char calef1, calef2;  	//C1, C2 y C3
+char Extract1, Extract2;  //E1, E2 y E3	
+char AA;  		//A1
+char Persiana; 	//P1
+char Temp; 		//ST
+char Hum; 		//SH
+bit puerta;  	//X1			Abierta o cerrada. 
+char bombillos; 
+char RegEstado; 
+char ESTADO; 
+char UltValor; 
+char LongTrama;
+char Origen; 
+char Destino; 
+char nom_val=0; 
+03D8  1283  	BCF STATUS, RP0
+03D9  1303  	BCF STATUS, RP1
+03DA  01B1  	CLRF gbl_nom_val
+
+
+
+//variables temporales. 
+char temp; 
+char nom_temp, nom_temp_h; 
+char val_temp; 
+//ESTADOS
+
+#define INICIO		0
+#define CABECERA_P 	1
+#define CABECERA_A 	2
+#define LONGITUD 	3
+#define ORIGEN		4
+#define DESTINO		5
+#define vESTADO		6
+#define DISPOSITIVO	7
+#define FIN_CAB_M	8
+#define FIN_CAB_R	9
+#define DirHABITACION 102
+/**
+VALORES EN DECIMAL
+PC		100
+T.C.M	101
+HAB1	102
+HAB2	103
+HAB3	104
+TS H1	105
+TS H2	106
+TS H3	107
+*/
+
+
+#define C1_EEPROM 0x03
+#define C2_EEPROM 0x04
+#define AA_EEPROM 0x05
+#define E1_EEPROM 0x06
+#define E2_EEPROM 0x07
+#define BX_EEPROM 0x08
+#define P1_EEPROM 0x09
+
+void SetDispositivo(char n1, char n2, char val)
+
+{
+
+	//puts("ingresa a set Dispositivo");
+	//if(()&&()&&())
+	if((n1=='C')&&(n2=='1'))
+0171  083B  	MOVF SetDisposi_00015_arg_n1, W
+0172  3A43  	XORLW 0x43
+0173  1D03  	BTFSS STATUS,Z
+0174  2981  	GOTO	label17
+0175  083C  	MOVF SetDisposi_00015_arg_n2, W
+0176  3A31  	XORLW 0x31
+0177  1D03  	BTFSS STATUS,Z
+0178  2981  	GOTO	label17
+0181        label17
+
+	{
+			calef1 = val; 
+0179  083D  	MOVF SetDisposi_00015_arg_val, W
+017A  00A4  	MOVWF gbl_calef1
+
+			eeprom_write(C1_EEPROM,val);
+017B  3003  	MOVLW 0x03
+017C  00BE  	MOVWF eeprom_wri_00012_arg_address
+017D  083D  	MOVF SetDisposi_00015_arg_val, W
+017E  00BF  	MOVWF eeprom_wri_00012_arg_data
+017F  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+0180  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO C1 \n");
+	}
+	
+	if((n1=='C')&&(n2=='2'))
+0181  083B  	MOVF SetDisposi_00015_arg_n1, W
+0182  3A43  	XORLW 0x43
+0183  1D03  	BTFSS STATUS,Z
+0184  2991  	GOTO	label18
+0185  083C  	MOVF SetDisposi_00015_arg_n2, W
+0186  3A32  	XORLW 0x32
+0187  1D03  	BTFSS STATUS,Z
+0188  2991  	GOTO	label18
+0191        label18
+
+	{
+			calef2 = val; 
+0189  083D  	MOVF SetDisposi_00015_arg_val, W
+018A  00A5  	MOVWF gbl_calef2
+
+			eeprom_write(C2_EEPROM,val);
+018B  3004  	MOVLW 0x04
+018C  00BE  	MOVWF eeprom_wri_00012_arg_address
+018D  083D  	MOVF SetDisposi_00015_arg_val, W
+018E  00BF  	MOVWF eeprom_wri_00012_arg_data
+018F  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+0190  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO C2 \n");
+	}
+	
+		
+	if((n1=='E')&&(n2=='1'))
+0191  083B  	MOVF SetDisposi_00015_arg_n1, W
+0192  3A45  	XORLW 0x45
+0193  1D03  	BTFSS STATUS,Z
+0194  29A1  	GOTO	label19
+0195  083C  	MOVF SetDisposi_00015_arg_n2, W
+0196  3A31  	XORLW 0x31
+0197  1D03  	BTFSS STATUS,Z
+0198  29A1  	GOTO	label19
+01A1        label19
+
+	{
+			Extract1 = val;
+0199  083D  	MOVF SetDisposi_00015_arg_val, W
+019A  00A6  	MOVWF gbl_Extract1
+
+			eeprom_write(E1_EEPROM,val); 
+019B  3006  	MOVLW 0x06
+019C  00BE  	MOVWF eeprom_wri_00012_arg_address
+019D  083D  	MOVF SetDisposi_00015_arg_val, W
+019E  00BF  	MOVWF eeprom_wri_00012_arg_data
+019F  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+01A0  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO E1 \n");
+	}
+	
+	if((n1=='E')&&(n2=='2'))
+01A1  083B  	MOVF SetDisposi_00015_arg_n1, W
+01A2  3A45  	XORLW 0x45
+01A3  1D03  	BTFSS STATUS,Z
+01A4  29B1  	GOTO	label20
+01A5  083C  	MOVF SetDisposi_00015_arg_n2, W
+01A6  3A32  	XORLW 0x32
+01A7  1D03  	BTFSS STATUS,Z
+01A8  29B1  	GOTO	label20
+01B1        label20
+
+	{
+			Extract2 = val;
+01A9  083D  	MOVF SetDisposi_00015_arg_val, W
+01AA  00A7  	MOVWF gbl_Extract2
+
+			eeprom_write(E2_EEPROM,val); 
+01AB  3007  	MOVLW 0x07
+01AC  00BE  	MOVWF eeprom_wri_00012_arg_address
+01AD  083D  	MOVF SetDisposi_00015_arg_val, W
+01AE  00BF  	MOVWF eeprom_wri_00012_arg_data
+01AF  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+01B0  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO E2 \n");
+	}
+	
+	if((n1=='A')&&(n2=='A'))
+01B1  083B  	MOVF SetDisposi_00015_arg_n1, W
+01B2  3A41  	XORLW 0x41
+01B3  1D03  	BTFSS STATUS,Z
+01B4  29C1  	GOTO	label21
+01B5  083C  	MOVF SetDisposi_00015_arg_n2, W
+01B6  3A41  	XORLW 0x41
+01B7  1D03  	BTFSS STATUS,Z
+01B8  29C1  	GOTO	label21
+01C1        label21
+
+	{
+			AA = val; 
+01B9  083D  	MOVF SetDisposi_00015_arg_val, W
+01BA  00A8  	MOVWF gbl_AA
+
+			eeprom_write(AA_EEPROM,val);
+01BB  3005  	MOVLW 0x05
+01BC  00BE  	MOVWF eeprom_wri_00012_arg_address
+01BD  083D  	MOVF SetDisposi_00015_arg_val, W
+01BE  00BF  	MOVWF eeprom_wri_00012_arg_data
+01BF  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+01C0  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO AA \n");
+	}
+	
+	if((n1=='P')&&(n2=='1'))
+01C1  083B  	MOVF SetDisposi_00015_arg_n1, W
+01C2  3A50  	XORLW 0x50
+01C3  1D03  	BTFSS STATUS,Z
+01C4  29D1  	GOTO	label22
+01C5  083C  	MOVF SetDisposi_00015_arg_n2, W
+01C6  3A31  	XORLW 0x31
+01C7  1D03  	BTFSS STATUS,Z
+01C8  29D1  	GOTO	label22
+01D1        label22
+
+	{
+			Persiana = val; 
+01C9  083D  	MOVF SetDisposi_00015_arg_val, W
+01CA  00A9  	MOVWF gbl_Persiana
+
+			eeprom_write(P1_EEPROM,val);
+01CB  3009  	MOVLW 0x09
+01CC  00BE  	MOVWF eeprom_wri_00012_arg_address
+01CD  083D  	MOVF SetDisposi_00015_arg_val, W
+01CE  00BF  	MOVWF eeprom_wri_00012_arg_data
+01CF  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+01D0  120D  	BCF gbl_pir2,4
+
+			
+	}
+	
+	if((n1=='B')&&(n2=='X'))
+01D1  083B  	MOVF SetDisposi_00015_arg_n1, W
+01D2  3A42  	XORLW 0x42
+01D3  1D03  	BTFSS STATUS,Z
+01D5  083C  	MOVF SetDisposi_00015_arg_n2, W
+01D6  3A58  	XORLW 0x58
+01D7  1D03  	BTFSS STATUS,Z
+
+	{
+			bombillos = val;  
+01D9  083D  	MOVF SetDisposi_00015_arg_val, W
+01DA  00AA  	MOVWF gbl_bombillos
+
+			eeprom_write(BX_EEPROM,val);
+01DB  3008  	MOVLW 0x08
+01DC  00BE  	MOVWF eeprom_wri_00012_arg_address
+01DD  083D  	MOVF SetDisposi_00015_arg_val, W
+01DE  00BF  	MOVWF eeprom_wri_00012_arg_data
+01DF  2065  	CALL eeprom_wri_00012
+
+			pir2.EEIF = 0;
+01E0  120D  	BCF gbl_pir2,4
+
+			//puts("SE ESTABLECIO BX \n");
+			
+	}
+		
+}
+01D4  0008  	RETURN
+01D8  0008  	RETURN
+01E1  0008  	RETURN
+
+
+void setPuertos()
+
+{
+//puts("setPuertos"); 
+
+pin_C1_0 = calef1.0; 
+00A5  1283  	BCF STATUS, RP0
+00A6  1303  	BCF STATUS, RP1
+00A7  1824  	BTFSC gbl_calef1,0
+00A8  1406  	BSF gbl_portb,0
+00A9  1C24  	BTFSS gbl_calef1,0
+00AA  1006  	BCF gbl_portb,0
+
+pin_C1_1 = calef1.1;
+00AB  18A4  	BTFSC gbl_calef1,1
+00AC  1486  	BSF gbl_portb,1
+00AD  1CA4  	BTFSS gbl_calef1,1
+00AE  1086  	BCF gbl_portb,1
+
+
+pin_C2_0 = calef2.0; 
+00AF  1825  	BTFSC gbl_calef2,0
+00B0  1506  	BSF gbl_portb,2
+00B1  1C25  	BTFSS gbl_calef2,0
+00B2  1106  	BCF gbl_portb,2
+
+pin_C2_1 = calef2.1;
+00B3  18A5  	BTFSC gbl_calef2,1
+00B4  1586  	BSF gbl_portb,3
+00B5  1CA5  	BTFSS gbl_calef2,1
+00B6  1186  	BCF gbl_portb,3
+
+
+pin_E1_0 = Extract1.0; 
+00B7  1826  	BTFSC gbl_Extract1,0
+00B8  1608  	BSF gbl_portd,4
+00B9  1C26  	BTFSS gbl_Extract1,0
+00BA  1208  	BCF gbl_portd,4
+
+pin_E1_1 = Extract1.1;
+00BB  18A6  	BTFSC gbl_Extract1,1
+00BC  1688  	BSF gbl_portd,5
+00BD  1CA6  	BTFSS gbl_Extract1,1
+00BE  1288  	BCF gbl_portd,5
+
+pin_E1_2 = Extract1.2; 
+00BF  1926  	BTFSC gbl_Extract1,2
+00C0  1708  	BSF gbl_portd,6
+00C1  1D26  	BTFSS gbl_Extract1,2
+00C2  1308  	BCF gbl_portd,6
+
+pin_E1_3 = Extract1.3;
+00C3  19A6  	BTFSC gbl_Extract1,3
+00C4  1788  	BSF gbl_portd,7
+00C5  1DA6  	BTFSS gbl_Extract1,3
+00C6  1388  	BCF gbl_portd,7
+
+
+pin_E2_0 = Extract2.0; 
+00C7  1827  	BTFSC gbl_Extract2,0
+00C8  1408  	BSF gbl_portd,0
+00C9  1C27  	BTFSS gbl_Extract2,0
+00CA  1008  	BCF gbl_portd,0
+
+pin_E2_1 = Extract2.1;
+00CB  18A7  	BTFSC gbl_Extract2,1
+00CC  1488  	BSF gbl_portd,1
+00CD  1CA7  	BTFSS gbl_Extract2,1
+00CE  1088  	BCF gbl_portd,1
+
+pin_E2_2 = Extract2.2; 
+00CF  1927  	BTFSC gbl_Extract2,2
+00D0  1508  	BSF gbl_portd,2
+00D1  1D27  	BTFSS gbl_Extract2,2
+00D2  1108  	BCF gbl_portd,2
+
+pin_E2_3 = Extract2.3;
+00D3  19A7  	BTFSC gbl_Extract2,3
+00D4  1588  	BSF gbl_portd,3
+00D5  1DA7  	BTFSS gbl_Extract2,3
+00D6  1188  	BCF gbl_portd,3
+
+
+
+if(AA == 1) // Encender / apagar --> se baja la temperatura. 
+00D7  0328  	DECF gbl_AA, W
+00D8  1D03  	BTFSS STATUS,Z
+00D9  28F0  	GOTO	label10
+00F0        label10
+
+{
+
+	pin_AA_3  = 1; 
+00DA  1786  	BSF gbl_portb,7
+
+	delay_ms(700); 
+00DB  30BC  	MOVLW 0xBC
+00DC  00BC  	MOVWF delay_ms_00000_arg_del
+00DD  2004  	CALL delay_ms_00000
+
+	pin_AA_3 = 0; 
+00DE  1386  	BCF gbl_portb,7
+
+	
+	delay_s(2); 
+00DF  3002  	MOVLW 0x02
+00E0  00BB  	MOVWF delay_s_00000_arg_del
+00E1  2030  	CALL delay_s_00000
+
+	
+	pin_AA_2  = 1; 
+00E2  1706  	BSF gbl_portb,6
+
+	delay_ms(700); 
+00E3  30BC  	MOVLW 0xBC
+00E4  00BC  	MOVWF delay_ms_00000_arg_del
+00E5  2004  	CALL delay_ms_00000
+
+	pin_AA_2 = 0; 
+00E6  1306  	BCF gbl_portb,6
+
+	
+	delay_s(2); 
+00E7  3002  	MOVLW 0x02
+00E8  00BB  	MOVWF delay_s_00000_arg_del
+00E9  2030  	CALL delay_s_00000
+
+	
+	pin_AA_2  = 1; 
+00EA  1706  	BSF gbl_portb,6
+
+	delay_ms(700); 
+00EB  30BC  	MOVLW 0xBC
+00EC  00BC  	MOVWF delay_ms_00000_arg_del
+00ED  2004  	CALL delay_ms_00000
+
+	pin_AA_2 = 0; 
+00EE  1306  	BCF gbl_portb,6
+
+
+
+}else if(AA == 2)
+00EF  2909  	GOTO	label12
+00F0  0828  	MOVF gbl_AA, W
+00F1  3A02  	XORLW 0x02
+00F2  1D03  	BTFSS STATUS,Z
+00F3  28FD  	GOTO	label11
+00FD        label11
+
+{
+	pin_AA_1  = 1; 
+00F4  1686  	BSF gbl_portb,5
+
+	delay_ms(700); 
+00F5  30BC  	MOVLW 0xBC
+00F6  00BC  	MOVWF delay_ms_00000_arg_del
+00F7  2004  	CALL delay_ms_00000
+
+	pin_AA_1 = 0; 
+00F8  1286  	BCF gbl_portb,5
+
+	
+	delay_s(1); 
+00F9  3001  	MOVLW 0x01
+00FA  00BB  	MOVWF delay_s_00000_arg_del
+00FB  2030  	CALL delay_s_00000
+
+}else if(AA == 3)
+00FC  2909  	GOTO	label12
+00FD  0828  	MOVF gbl_AA, W
+00FE  3A03  	XORLW 0x03
+00FF  1D03  	BTFSS STATUS,Z
+0100  2909  	GOTO	label12
+0109        label12
+
+{
+	pin_AA_0  = 1; 
+0101  1606  	BSF gbl_portb,4
+
+	delay_ms(700); 
+0102  30BC  	MOVLW 0xBC
+0103  00BC  	MOVWF delay_ms_00000_arg_del
+0104  2004  	CALL delay_ms_00000
+
+	pin_AA_0 = 0; 
+0105  1206  	BCF gbl_portb,4
+
+	
+	delay_s(1); 
+0106  3001  	MOVLW 0x01
+0107  00BB  	MOVWF delay_s_00000_arg_del
+0108  2030  	CALL delay_s_00000
+
+}
+
+
+pin_per_0 = Persiana.0;
+0109  1829  	BTFSC gbl_Persiana,0
+010A  1607  	BSF gbl_portc,4
+010B  1C29  	BTFSS gbl_Persiana,0
+010C  1207  	BCF gbl_portc,4
+
+pin_per_1 = Persiana.1;
+010D  18A9  	BTFSC gbl_Persiana,1
+010E  1687  	BSF gbl_portc,5
+010F  1CA9  	BTFSS gbl_Persiana,1
+0110  1287  	BCF gbl_portc,5
+
+
+
+port_Bomb.0 = bombillos.0; 
+0111  182A  	BTFSC gbl_bombillos,0
+0112  1405  	BSF gbl_porta,0
+0113  1C2A  	BTFSS gbl_bombillos,0
+0114  1005  	BCF gbl_porta,0
+
+port_Bomb.1 = bombillos.1; 
+0115  18AA  	BTFSC gbl_bombillos,1
+0116  1485  	BSF gbl_porta,1
+0117  1CAA  	BTFSS gbl_bombillos,1
+0118  1085  	BCF gbl_porta,1
+
+port_Bomb.2 = bombillos.2; 
+0119  192A  	BTFSC gbl_bombillos,2
+011A  1505  	BSF gbl_porta,2
+011B  1D2A  	BTFSS gbl_bombillos,2
+011C  1105  	BCF gbl_porta,2
+
+port_Bomb.3 = bombillos.3; 
+011D  19AA  	BTFSC gbl_bombillos,3
+011E  1585  	BSF gbl_porta,3
+011F  1DAA  	BTFSS gbl_bombillos,3
+0120  1185  	BCF gbl_porta,3
+
+port_Bomb.4 = bombillos.4; 
+0121  1A2A  	BTFSC gbl_bombillos,4
+0122  1605  	BSF gbl_porta,4
+0123  1E2A  	BTFSS gbl_bombillos,4
+0124  1205  	BCF gbl_porta,4
+
+port_Bomb.5 = bombillos.5; 
+0125  1AAA  	BTFSC gbl_bombillos,5
+0126  1685  	BSF gbl_porta,5
+0127  1EAA  	BTFSS gbl_bombillos,5
+0128  1285  	BCF gbl_porta,5
+
+port_Bomb6 = bombillos.6; 
+0129  1B2A  	BTFSC gbl_bombillos,6
+012A  1409  	BSF gbl_porte,0
+012B  1F2A  	BTFSS gbl_bombillos,6
+012C  1009  	BCF gbl_porte,0
+
+port_Bomb7 = bombillos.7; 
+012D  1BAA  	BTFSC gbl_bombillos,7
+012E  1489  	BSF gbl_porte,1
+012F  1FAA  	BTFSS gbl_bombillos,7
+0130  1089  	BCF gbl_porte,1
+
+}
+0131  0008  	RETURN
+
+
+void ResetPuertos()
+{
+pin_C1_0 = 0; 
+pin_C1_1 = 0;
+pin_C2_0 = 0; 
+pin_C2_1 = 0;
+
+pin_E1_0 = 0;
+pin_E1_1 = 0;
+pin_E1_2 = 0;
+pin_E1_3 = 0;
+
+pin_E2_0 = 0;
+pin_E2_1 = 0;
+pin_E2_2 = 0;
+pin_E2_3 = 0;
+
+pin_AA_0 = 0;
+pin_AA_1 = 0;
+pin_AA_2 = 0;
+pin_AA_3 = 0; 
+
+
+pin_per_0 = 0;
+pin_per_1 = 0;
+port_Bomb = 0x00;
+port_Bomb6 = 0; 
+port_Bomb7 = 0; 
+
+}
+
+void limpiarVariables()
+
+{
+	calef1 = 0; 
+014D  1283  	BCF STATUS, RP0
+014E  1303  	BCF STATUS, RP1
+014F  01A4  	CLRF gbl_calef1
+
+	
+	calef2 = 0; 
+0150  01A5  	CLRF gbl_calef2
+
+		
+	Extract1 =  0; 
+0151  01A6  	CLRF gbl_Extract1
+
+	
+	Extract2 = 0; 
+0152  01A7  	CLRF gbl_Extract2
+
+	
+	AA = 0; 
+0153  01A8  	CLRF gbl_AA
+
+	
+	Persiana = 0; 
+0154  01A9  	CLRF gbl_Persiana
+
+	
+	bombillos = 0; 
+0155  01AA  	CLRF gbl_bombillos
+
+	
+}
+0156  0008  	RETURN
+
+
+void ResponderTrama(char Destino)
+
+{
+	
+	char *trama = "PALODEMR";
+01E2  3050  	MOVLW 0x50
+01E3  00BE  	MOVWF CompTempVar634
+01E4  3041  	MOVLW 0x41
+01E5  00BF  	MOVWF CompTempVar634+D'1'
+01E6  304C  	MOVLW 0x4C
+01E7  00C0  	MOVWF CompTempVar634+D'2'
+01E8  304F  	MOVLW 0x4F
+01E9  00C1  	MOVWF CompTempVar634+D'3'
+01EA  3044  	MOVLW 0x44
+01EB  00C2  	MOVWF CompTempVar634+D'4'
+01EC  3045  	MOVLW 0x45
+01ED  00C3  	MOVWF CompTempVar634+D'5'
+01EE  304D  	MOVLW 0x4D
+01EF  00C4  	MOVWF CompTempVar634+D'6'
+01F0  3052  	MOVLW 0x52
+01F1  00C5  	MOVWF CompTempVar634+D'7'
+01F2  01C6  	CLRF CompTempVar634+D'8'
+01F3  3000  	MOVLW HIGH(CompTempVar634+D'0')
+01F4  00BD  	MOVWF ResponderT_00018_1_trama+D'1'
+01F5  303E  	MOVLW LOW(CompTempVar634+D'0')
+01F6  00BC  	MOVWF ResponderT_00018_1_trama
+
+		//longitud
+		trama[2] = 0; 
+01F7  1383  	BCF STATUS,IRP
+01F8  183D  	BTFSC ResponderT_00018_1_trama+D'1',0
+01F9  1783  	BSF STATUS,IRP
+01FA  083C  	MOVF ResponderT_00018_1_trama, W
+01FB  0084  	MOVWF FSR
+01FC  3002  	MOVLW 0x02
+01FD  0784  	ADDWF FSR, F
+01FE  3000  	MOVLW 0x00
+01FF  0080  	MOVWF INDF
+
+		//Dir Origen
+		trama[3] = DirHABITACION; 
+0200  083C  	MOVF ResponderT_00018_1_trama, W
+0201  0084  	MOVWF FSR
+0202  3003  	MOVLW 0x03
+0203  0784  	ADDWF FSR, F
+0204  3066  	MOVLW 0x66
+0205  0080  	MOVWF INDF
+
+		//Dir Destino
+		trama[4] = Destino; 
+0206  083C  	MOVF ResponderT_00018_1_trama, W
+0207  0084  	MOVWF FSR
+0208  3004  	MOVLW 0x04
+0209  0784  	ADDWF FSR, F
+020A  083B  	MOVF ResponderT_00018_arg_Destino, W
+020B  0080  	MOVWF INDF
+
+		//Estado
+		trama[5] = 2; 
+020C  083C  	MOVF ResponderT_00018_1_trama, W
+020D  0084  	MOVWF FSR
+020E  3005  	MOVLW 0x05
+020F  0784  	ADDWF FSR, F
+0210  3002  	MOVLW 0x02
+0211  0080  	MOVWF INDF
+
+		puts_(trama,8); 
+0212  083C  	MOVF ResponderT_00018_1_trama, W
+0213  00E1  	MOVWF puts__00000_arg_source
+0214  083D  	MOVF ResponderT_00018_1_trama+D'1', W
+0215  00E2  	MOVWF puts__00000_arg_source+D'1'
+0216  3008  	MOVLW 0x08
+0217  00E3  	MOVWF puts__00000_arg_tam
+0218  01E4  	CLRF puts__00000_arg_tam+D'1'
+0219  2046  	CALL puts__00000
+
+		
+}
+021A  0008  	RETURN
+
+
+void ResponderEEPROM(char Destino)
+
+{
+	
+	char *trama = "PALODEXXXXXXXXXXMR";
+021B  3041  	MOVLW 0x41
+021C  00CF  	MOVWF CompTempVar640+D'1'
+021D  3044  	MOVLW 0x44
+021E  00D2  	MOVWF CompTempVar640+D'4'
+021F  3045  	MOVLW 0x45
+0220  00D3  	MOVWF CompTempVar640+D'5'
+0221  304C  	MOVLW 0x4C
+0222  00D0  	MOVWF CompTempVar640+D'2'
+0223  304D  	MOVLW 0x4D
+0224  00DE  	MOVWF CompTempVar640+D'16'
+0225  304F  	MOVLW 0x4F
+0226  00D1  	MOVWF CompTempVar640+D'3'
+0227  3050  	MOVLW 0x50
+0228  00CE  	MOVWF CompTempVar640
+0229  3052  	MOVLW 0x52
+022A  00DF  	MOVWF CompTempVar640+D'17'
+022B  3058  	MOVLW 0x58
+022C  00D4  	MOVWF CompTempVar640+D'6'
+022D  00D5  	MOVWF CompTempVar640+D'7'
+022E  00D6  	MOVWF CompTempVar640+D'8'
+022F  00D7  	MOVWF CompTempVar640+D'9'
+0230  00D8  	MOVWF CompTempVar640+D'10'
+0231  00D9  	MOVWF CompTempVar640+D'11'
+0232  00DA  	MOVWF CompTempVar640+D'12'
+0233  00DB  	MOVWF CompTempVar640+D'13'
+0234  00DC  	MOVWF CompTempVar640+D'14'
+0235  00DD  	MOVWF CompTempVar640+D'15'
+0236  01E0  	CLRF CompTempVar640+D'18'
+0237  3000  	MOVLW HIGH(CompTempVar640+D'0')
+0238  00BD  	MOVWF ResponderE_00019_1_trama+D'1'
+0239  304E  	MOVLW LOW(CompTempVar640+D'0')
+023A  00BC  	MOVWF ResponderE_00019_1_trama
+
+		//longitud
+		trama[2] = 10; 
+023B  1383  	BCF STATUS,IRP
+023C  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+023D  1783  	BSF STATUS,IRP
+023E  083C  	MOVF ResponderE_00019_1_trama, W
+023F  0084  	MOVWF FSR
+0240  3002  	MOVLW 0x02
+0241  0784  	ADDWF FSR, F
+0242  300A  	MOVLW 0x0A
+0243  0080  	MOVWF INDF
+
+		//Dir Origen
+		trama[3] = DirHABITACION; 
+0244  083C  	MOVF ResponderE_00019_1_trama, W
+0245  0084  	MOVWF FSR
+0246  3003  	MOVLW 0x03
+0247  0784  	ADDWF FSR, F
+0248  3066  	MOVLW 0x66
+0249  0080  	MOVWF INDF
+
+		//Dir Destino
+		trama[4] = Destino; 
+024A  083C  	MOVF ResponderE_00019_1_trama, W
+024B  0084  	MOVWF FSR
+024C  3004  	MOVLW 0x04
+024D  0784  	ADDWF FSR, F
+024E  083B  	MOVF ResponderE_00019_arg_Destino, W
+024F  0080  	MOVWF INDF
+
+		//Estado
+		trama[5] = 2; 
+0250  083C  	MOVF ResponderE_00019_1_trama, W
+0251  0084  	MOVWF FSR
+0252  3005  	MOVLW 0x05
+0253  0784  	ADDWF FSR, F
+0254  3002  	MOVLW 0x02
+0255  0080  	MOVWF INDF
+
+		
+		//Calefactor1
+		trama[6] = eeprom_read(C1_EEPROM);
+0256  3003  	MOVLW 0x03
+0257  00BE  	MOVWF eeprom_rea_00011_arg_address
+0258  208A  	CALL eeprom_rea_00011
+0259  1383  	BCF STATUS,IRP
+025A  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+025B  1783  	BSF STATUS,IRP
+025C  083C  	MOVF ResponderE_00019_1_trama, W
+025D  0084  	MOVWF FSR
+025E  3006  	MOVLW 0x06
+025F  0784  	ADDWF FSR, F
+0260  083F  	MOVF CompTempVarRet658, W
+0261  0080  	MOVWF INDF
+
+		//Calefactor2 
+		trama[7] = eeprom_read(C2_EEPROM);
+0262  3004  	MOVLW 0x04
+0263  00BE  	MOVWF eeprom_rea_00011_arg_address
+0264  208A  	CALL eeprom_rea_00011
+0265  1383  	BCF STATUS,IRP
+0266  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+0267  1783  	BSF STATUS,IRP
+0268  083C  	MOVF ResponderE_00019_1_trama, W
+0269  0084  	MOVWF FSR
+026A  3007  	MOVLW 0x07
+026B  0784  	ADDWF FSR, F
+026C  083F  	MOVF CompTempVarRet658, W
+026D  0080  	MOVWF INDF
+
+		//Extractor 1 
+		trama[8] = eeprom_read(E1_EEPROM);
+026E  3006  	MOVLW 0x06
+026F  00BE  	MOVWF eeprom_rea_00011_arg_address
+0270  208A  	CALL eeprom_rea_00011
+0271  1383  	BCF STATUS,IRP
+0272  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+0273  1783  	BSF STATUS,IRP
+0274  083C  	MOVF ResponderE_00019_1_trama, W
+0275  0084  	MOVWF FSR
+0276  3008  	MOVLW 0x08
+0277  0784  	ADDWF FSR, F
+0278  083F  	MOVF CompTempVarRet658, W
+0279  0080  	MOVWF INDF
+
+		//Extractor 2 
+		trama[9] = eeprom_read(E2_EEPROM);
+027A  3007  	MOVLW 0x07
+027B  00BE  	MOVWF eeprom_rea_00011_arg_address
+027C  208A  	CALL eeprom_rea_00011
+027D  1383  	BCF STATUS,IRP
+027E  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+027F  1783  	BSF STATUS,IRP
+0280  083C  	MOVF ResponderE_00019_1_trama, W
+0281  0084  	MOVWF FSR
+0282  3009  	MOVLW 0x09
+0283  0784  	ADDWF FSR, F
+0284  083F  	MOVF CompTempVarRet658, W
+0285  0080  	MOVWF INDF
+
+		 //
+		trama[10] = 0; 
+0286  083C  	MOVF ResponderE_00019_1_trama, W
+0287  0084  	MOVWF FSR
+0288  300A  	MOVLW 0x0A
+0289  0784  	ADDWF FSR, F
+028A  3000  	MOVLW 0x00
+028B  0080  	MOVWF INDF
+
+		//Persianas
+		trama[11] = eeprom_read(P1_EEPROM); 
+028C  3009  	MOVLW 0x09
+028D  00BE  	MOVWF eeprom_rea_00011_arg_address
+028E  208A  	CALL eeprom_rea_00011
+028F  1383  	BCF STATUS,IRP
+0290  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+0291  1783  	BSF STATUS,IRP
+0292  083C  	MOVF ResponderE_00019_1_trama, W
+0293  0084  	MOVWF FSR
+0294  300B  	MOVLW 0x0B
+0295  0784  	ADDWF FSR, F
+0296  083F  	MOVF CompTempVarRet658, W
+0297  0080  	MOVWF INDF
+
+		//Iluminacion 	
+		trama[12] = eeprom_read(BX_EEPROM);
+0298  3008  	MOVLW 0x08
+0299  00BE  	MOVWF eeprom_rea_00011_arg_address
+029A  208A  	CALL eeprom_rea_00011
+029B  1383  	BCF STATUS,IRP
+029C  183D  	BTFSC ResponderE_00019_1_trama+D'1',0
+029D  1783  	BSF STATUS,IRP
+029E  083C  	MOVF ResponderE_00019_1_trama, W
+029F  0084  	MOVWF FSR
+02A0  300C  	MOVLW 0x0C
+02A1  0784  	ADDWF FSR, F
+02A2  083F  	MOVF CompTempVarRet658, W
+02A3  0080  	MOVWF INDF
+
+		 
+		trama[13] = 0; 
+02A4  083C  	MOVF ResponderE_00019_1_trama, W
+02A5  0084  	MOVWF FSR
+02A6  300D  	MOVLW 0x0D
+02A7  0784  	ADDWF FSR, F
+02A8  3000  	MOVLW 0x00
+02A9  0080  	MOVWF INDF
+
+		trama[14] = 0; 
+02AA  083C  	MOVF ResponderE_00019_1_trama, W
+02AB  0084  	MOVWF FSR
+02AC  300E  	MOVLW 0x0E
+02AD  0784  	ADDWF FSR, F
+02AE  3000  	MOVLW 0x00
+02AF  0080  	MOVWF INDF
+
+		trama[15] = 0; 
+02B0  083C  	MOVF ResponderE_00019_1_trama, W
+02B1  0084  	MOVWF FSR
+02B2  300F  	MOVLW 0x0F
+02B3  0784  	ADDWF FSR, F
+02B4  3000  	MOVLW 0x00
+02B5  0080  	MOVWF INDF
+
+		
+		puts_(trama,18); 
+02B6  083C  	MOVF ResponderE_00019_1_trama, W
+02B7  00E1  	MOVWF puts__00000_arg_source
+02B8  083D  	MOVF ResponderE_00019_1_trama+D'1', W
+02B9  00E2  	MOVWF puts__00000_arg_source+D'1'
+02BA  3012  	MOVLW 0x12
+02BB  00E3  	MOVWF puts__00000_arg_tam
+02BC  01E4  	CLRF puts__00000_arg_tam+D'1'
+02BD  2046  	CALL puts__00000
+
+		
+}
+02BE  0008  	RETURN
+
+
+
+#endif 
+#endif 
+////////////////////////////////////////////////////////////////////////////
+// Serial Communications Library
+////////////////////////////////////////////////////////////////////////////
+// Author(s): Andrew Smallridge
+// Date 15 November 2004
+//
+// Copyright(C) 2004-2006 Andrew Smallridge
+// Copyright(C) 2004-2010 Pavel Baranov
+// Copyright(C) 2004-2010 David Hobday
+// Existing constants predefined for serial hardware driver and software
+// emulation for the PIC 16F87x, PIC18F2xx and 18F4xx processors. 
+// For hardware support on other PICs the constants must be mapped to 
+// the corresponding register map of the target device
+////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+// USART driver template arguments and variables
+////////////////////////////////////////////////////////////////////////////
+#define USART_ARGS	TX_BIT, TX_PORT, TX_TRIS, RX_BIT, RX_PORT, RX_TRIS, \
+					e_SPBRG, e_RCREG, e_TXREG, e_TXSTA, e_RCSTA,  		\
+					e_TXIF_BIT,e_TXIF_PIR, e_RCIF_BIT, e_RCIF_PIR, MODE 
+
+
+////////////////////////////////////////////////////////////////////////////
+//	The following three sections should be copied to the user's program:
+//		USART software implementation template arguments and variables
+// 		USART hardwareware implementation template arguments
+////////////////////////////////////////////////////////////////////////////
+//
+// **** START OF DEFAULTS USED FOR SOFTWARE USART EMULATION ****
+//
+// RAM used by the software USART driver to emulate the equivalent serial hardware registers
+// Note this section is really just reserving the space. The defines in the subsequent section
+// overlay these RAM locations					
+//unsigned short sw_SPBRG@0x47;	// define location for the emulated SSPCON1
+//unsigned short sw_RCREG@0x48;	// define location for the emulated SSPCON2
+//unsigned short sw_TXREG@0x49;	// define location for the emulated SSPSTAT
+//unsigned short sw_TXSTA@0x4A;	// define location for the emulated SSPBUF
+//unsigned short sw_RCSTA@0x4B;	// define location for the emulated SSPADD
+//unsigned short sw_TXIF_PIR@0x4C;// define location for the emulated TXIF_PIR1
+//unsigned short sw_RCIF_PIR@0x4C;// define location for the emulated RCIF_PIR1
+
+
+////////////////////////////////////////////////////////////////////////////
+// USART software implementation template argument values
+////////////////////////////////////////////////////////////////////////////
+// variables cannot be passed as template arguments. The following constants map to
+// the PIC registers and software emulated USART RAM locations. These constants are
+// then used by the templated functions. When changing the address of an emulated
+// register the corresponding constant mapping must also be changed.
+//
+// Sample PIC18F defaults for software emulated USART support
+//#define TX_PORT		0xf8b
+//#define TX_TRIS		0x0f94
+//#define TX_BIT		6
+//#define RX_PORT		0x0f82
+//#define RX_TRIS		0x0f94
+//#define RX_BIT		7
+//#define e_SPBRG		0x47
+//#define e_RCREG		0x48
+//#define e_TXREG		0x49
+//#define e_TXSTA		0x4A
+//#define e_RCSTA		0x4B
+//#define e_TXIF_PIR	0x4C
+//#define e_RCIF_PIR	0x4C
+//#define e_TXIF_BIT	4
+//#define e_RCIF_BIT	5					
+//#define MODE		(USART_reset_wdt)
+
+//
+// Sample PIC16F87x defaults for software emulated USART support
+//#define TX_PORT		0x07
+//#define TX_TRIS		0x87
+//#define TX_BIT		6
+//#define RX_PORT		0x07
+//#define RX_TRIS		0x87
+//#define RX_BIT		7
+//#define e_SPBRG		0x99
+//#define e_RCREG		0x1a
+//#define e_TXREG		0x019
+//#define e_TXSTA		0x98
+//#define e_RCSTA		0x18
+//#define e_TXIF_PIR	0x0c
+//#define e_RCIF_PIR	0x0c
+//#define e_TXIF_BIT	4
+//#define e_RCIF_BIT	5
+//#define MODE		(USART_reset_wdt)
+
+
+////////////////////////////////////////////////////////////////////////////
+// bit_time is used by the software emulated USART and is the number of CPU
+// instruction cycles per bit.
+//
+// bit_time = FOSC / 4 / BAUDRATE 
+// The maximum value of bit_time currently limited to approximately 24000
+// and is determined by the maximum word size supported by the compiler.
+// this will change when 32 bit variables are supported.
+// At FOSC of 40MHz the minimum standard baud rate is 600 baud.
+// When using the software emulated USART functions ensure that the baud rate
+// can be realistically supported by the FOSC used. bit_time values below
+// 36 will likely lead to unreliable comms.
+//
+// The software UART takes 8 instruction cycles in a bit time loop. Therefore
+// the driver software divides the bit_time value by 8. If experimenting with
+// different values for bit_time use increments of 8 to guarentee a different
+// bit time is selected
+////////////////////////////////////////////////////////////////////////////
+//#define bit_time 86		// 115200 baud at 40MHz
+//#define bit_time 1041		// 9600 baud at 40MHz
+//#define bit_time 16667	// 600 baud at 40MHz
+//
+// **** END OF DEFAULTS USED FOR SOFTWARE USART EMULATION ****
+
+
+// **** START OF DEFAULTS USED FOR HARDWARE USART ****
+////////////////////////////////////////////////////////////////////////////
+// USART hardwareware implementation template argument values
+////////////////////////////////////////////////////////////////////////////
+// variables cannot be passed as template arguments. The following constants map to
+// the PIC registers and PIC's USART register locations. These constants are
+// then used by the templated functions. When moving between PIC families the
+// register mapping must be changed to map to the corresponding physical register
+//
+// PIC18F defaults for hardware USART support
+//#define TX_PORT		0x0f82
+//#define TX_TRIS		0x0f94
+//#define TX_BIT		6
+//#define RX_PORT		0x0f82
+//#define RX_TRIS		0x0f94
+//#define RX_BIT		7
+//#define e_SPBRG		0x0faf
+//#define e_RCREG		0x0fae
+//#define e_TXREG		0x0fad
+//#define e_TXSTA		0x0fac
+//#define e_RCSTA		0x0fab
+//#define e_TXIF_PIR	0x0f9e
+//#define e_RCIF_PIR	0x0f9e
+//#define e_TXIF_BIT	4
+//#define e_RCIF_BIT	5
+//#define MODE		(USART_reset_wdt | USART_HW)
+
+// PIC16F87x defaults for hardware USART support
+//#define TX_PORT		0x07
+//#define TX_TRIS		0x87
+//#define TX_BIT		6
+//#define RX_PORT		0x07
+//#define RX_TRIS		0x87
+//#define RX_BIT		7
+//#define e_SPBRG		0x99
+//#define e_RCREG		0x1a
+//#define e_TXREG		0x019
+//#define e_TXSTA		0x98
+//#define e_RCSTA		0x18
+//#define e_TXIF_PIR	0x0c
+//#define e_RCIF_PIR	0x0c
+//#define e_TXIF_BIT	4
+//#define e_RCIF_BIT	5
+//#define MODE		(USART_reset_wdt | USART_HW)
+//
+// **** END OF DEFAULTS USED FOR HARDWARE USART ****
+
+
+////////////////////////////////////////////////////////////////////////////
+// Serial Control Flag Bits
+//
+// The USART_invert flag is used to signal the software UART that the serial 
+// input and output signals are inverted from normal RS232 communications. 
+// Hardware implementations that use standard RS232 transievers
+// such as MS1488/MC1489 or MAX232 line drivers / receivers do NOT require this flag.
+//
+// The flags USART_HW and USART_invert are mutually exclusive.
+//
+// Sample use: #define MODE USART_reset_wdt | USART_HW
+//
+////////////////////////////////////////////////////////////////////////////
+// define USART Mode bits used for the MODE parameter
+#define	USART_HW		0x01
+#define	USART_invert	0x02
+#define	USART_reset_wdt	0x04
+
+////////////////////////////////////////////////////////////////////////////
+// Define the common serial template structure
+////////////////////////////////////////////////////////////////////////////
+#define _USART_TEMPL	template < \
+					unsigned char T_TX_BIT, unsigned short T_TX_PORT, unsigned short T_TX_TRIS, \
+					unsigned char T_RX_BIT, unsigned short T_RX_PORT, unsigned short T_RX_TRIS, \
+					unsigned short T_SPBRG, unsigned short T_RCREG, unsigned short T_TXREG, \
+					unsigned short T_TXSTA, unsigned short T_RCSTA, unsigned char T_TXIF_BIT, \
+					unsigned short T_TXIF_PIR, unsigned char T_RCIF_BIT, \
+					unsigned short T_RCIF_PIR, unsigned char T_MODE >
+
+
+////////////////////////////////////////////////////////////////////////////
+// Define the common USART template parameters
+////////////////////////////////////////////////////////////////////////////
+#define _USART_TEMPL_ARGS T_TX_BIT, T_TX_PORT, T_TX_TRIS, T_RX_BIT, \
+					T_RX_PORT, T_RX_TRIS, T_SPBRG, T_RCREG, T_TXREG, \
+					T_TXSTA, T_RCSTA,  T_TXIF_BIT, T_TXIF_PIR, \
+					T_RCIF_BIT, T_RCIF_PIR,  T_MODE 
+					
+////////////////////////////////////////////////////////////////////////////
+// Helpers that hide template arguments
+////////////////////////////////////////////////////////////////////////////
+#define uart_init	UART_INIT<USART_ARGS>
+#define kbhit		KBHIT<USART_ARGS> 
+#define getc		GETC<USART_ARGS>
+#define getch		GETC<USART_ARGS>
+#define putc		PUTC<USART_ARGS> 
+#define putch		PUTC<USART_ARGS>
+
+////////////////////////////////////////////////////////////////////////////
+// USART Status Bits - Emulates the PIC16F / PIC18F hardware USART implementation
+////////////////////////////////////////////////////////////////////////////
+//=============================================
+// define USART TXSTA Bits control bits                                                                                        
+#define u_TX9		0x06                                                                                                                                                                                  
+#define u_TXEN		0x05                                                                                         
+#define u_SYNC		0x04                                                                                         
+#define u_BRGH		0x02                                                                                         
+#define u_TRMT		0x01                                                                                         
+#define u_TX9D		0x00                                                                                                                                                                                 
+
+//=============================================
+// define USART RCSTA Bits control bits
+#define u_SPEN		0x07                                                                                         
+#define u_RX9		0x06                                                                                                                                                                                                                                                                          
+#define u_SREN		0x05                                                                                         
+#define u_CREN		0x04                                                                                         
+#define u_ADDEN		0x03                                                                                         
+#define u_FERR		0x02                                                                                         
+#define u_OERR		0x01                                                                                         
+#define u_RX9D		0x00                                                                                                                                                                                 
+
+//=============================================
+// define USART PIR status bits                                                                                        
+#define u_RCIF		0x05
+#define u_RXIF		0x05                                                                                         
+#define u_TXIF		0x04                                                                                         
+
+////////////////////////////////////////////////////////////////////////////
+//	KBHIT
+//
+//	Generic KBHIT handler for hardware and emulated USART
+//
+//	Returns true with hadware USART when a character is in the RX buffer
+//	Returns true with software emulated USART on detection of a start bit
+////////////////////////////////////////////////////////////////////////////
+_USART_TEMPL
+char KBHIT(void)
+
+{
+	volatile bit l_oerr@T_RCSTA.u_OERR;
+	volatile bit l_cren@T_RCSTA.u_CREN;
+	volatile bit l_rcif@T_RCIF_PIR.u_RCIF;	
+	volatile bit l_rx@T_RX_PORT.T_RX_BIT;
+	
+	if (T_MODE & USART_HW)
+
+	{
+		if (l_oerr)
+009B  1283  	BCF STATUS, RP0
+009C  1303  	BCF STATUS, RP1
+009D  1C98  	BTFSS KBHIT_00000_1_l_oerr,1
+009E  28A1  	GOTO	label9
+00A1        label9
+
+		{
+			l_cren = 0; // clear continous receive bit
+009F  1218  	BCF KBHIT_00000_1_l_cren,4
+
+			l_cren = 1; // set continous receive bit		
+00A0  1618  	BSF KBHIT_00000_1_l_cren,4
+
+		}
+		return(l_rcif);
+00A1  01BC  	CLRF CompTempVarRet632
+00A2  1A8C  	BTFSC KBHIT_00000_1_l_rcif,5
+00A3  0ABC  	INCF CompTempVarRet632, F
+
+	}
+	else
+	{
+		if (T_MODE & USART_invert)
+			l_rcif = l_rx;
+		else
+			l_rcif = ~l_rx;
+		return(l_rcif);		
+	}	
+}
+00A4  0008  	RETURN
+
+
+////////////////////////////////////////////////////////////////////////////
+//	GETC
+//
+//	Generic GETC handler for hardware and emulated USART
+////////////////////////////////////////////////////////////////////////////	
+_USART_TEMPL
+unsigned char GETC(void)
+
+{
+	volatile unsigned char l_rcreg@T_RCREG;
+	volatile bit l_rx@T_RX_PORT.T_RX_BIT;
+	
+	unsigned short bit_count;
+	char mask = 0x01;
+02BF  3001  	MOVLW 0x01
+02C0  1283  	BCF STATUS, RP0
+02C1  1303  	BCF STATUS, RP1
+02C2  00BB  	MOVWF GETC_00000_1_mask
+
+
+
+	if (T_MODE & USART_HW)
+	{	
+		while (!KBHIT<_USART_TEMPL_ARGS>()) // wait for a character
+02C3        label23
+02C3  209B  	CALL KBHIT_00000
+02C4  08BC  	MOVF CompTempVarRet632, F
+02C5  1D03  	BTFSS STATUS,Z
+02C6  2AC9  	GOTO	label24
+02C8  2AC3  	GOTO	label23
+02C9        label24
+
+			if (T_MODE & USART_reset_wdt)
+				clear_wdt();
+02C7  0064  	CLRWDT
+
+
+		return(l_rcreg);
+02C9  081A  	MOVF GETC_00000_1_l_rcreg, W
+02CA  00BC  	MOVWF CompTempVarRet631
+
+	}
+	else
+	{
+		l_rcreg = 0;
+		while (!KBHIT<_USART_TEMPL_ARGS>()) // wait for a character
+			if (T_MODE & USART_reset_wdt)
+				clear_wdt();
+	
+		while (mask)
+		{
+			for (bit_count = (-bit_time + 20) /8 ; bit_count; bit_count++);			
+			if (l_rx)
+				l_rcreg |= mask;
+			mask <<= 1;	
+		}
+
+		if (T_MODE & USART_invert)
+			l_rcreg = ~l_rcreg;
+		
+		// delay for but ignore stop bit
+		for (bit_count = (-bit_time *7/8 )/8; bit_count; bit_count++);	
+
+		return(l_rcreg);
+	}
+}
+02CB  0008  	RETURN
+
+
+////////////////////////////////////////////////////////////////////////////
+//	PUTC
+//
+//	Generic PUTC handler for hardware and emulated USART
+////////////////////////////////////////////////////////////////////////////	
+_USART_TEMPL
+void PUTC(char tx_char)
+
+{
+	volatile char l_txreg@T_TXREG;
+	volatile bit l_txif@T_TXIF_PIR.u_TXIF; // 0xf9e.4;
+	volatile bit l_tx@T_TX_PORT.T_TX_BIT;
+	unsigned short bit_count;
+	char mask = 0x01;
+003F  3001  	MOVLW 0x01
+0040  00E8  	MOVWF PUTC_00000_1_mask
+
+
+	if (T_MODE & USART_HW)
+	{	
+		while (!l_txif); // wait until tx register is empty
+0041        label4
+0041  1E0C  	BTFSS PUTC_00000_1_l_txif,4
+0042  2841  	GOTO	label4
+
+
+		l_txreg = tx_char;
+0043  0867  	MOVF PUTC_00000_arg_tx_char, W
+0044  0099  	MOVWF PUTC_00000_1_l_txreg
+
+	}
+	else
+	{
+		if (T_MODE & USART_invert)
+		{
+			tx_char = ~tx_char;
+			l_tx = 1; // inverted start bit
+		}
+		else
+			l_tx = 0; // start bit
+
+		for (bit_count = (-bit_time +20)/8; bit_count; bit_count++);
+
+		while (mask!=0)
+		{
+			if (mask & tx_char)
+				l_tx = 1;
+			else
+				l_tx = 0;			
+			for (bit_count = (-bit_time +20)/8; bit_count; bit_count++);		
+			mask <<=1;
+		}
+
+		// do stop bit
+		if (T_MODE & USART_invert)
+			l_tx = 0; // inverted stop bit
+		else
+			l_tx = 1; // stop bit
+		for (bit_count = (-bit_time +20)/8; bit_count; bit_count++);
+		delay_us(1);
+	}
+}	
+0045  0008  	RETURN
+
+////////////////////////////////////////////////////////////////////////////
+//	Initialise the UART
+//
+//	Passed paramters used when hardware USART is used. Dummy values
+//  must be passed for emulated USART
+////////////////////////////////////////////////////////////////////////////
+// BRG_mode - sets the hardware baud rate generator speed mode
+// BRG_mode == 0 for low speed mode
+// BRG_divisor - set hardware baud rate generator divisor
+// Baud rate for software emulated USART set via constants at head of this file
+_USART_TEMPL	
+void UART_INIT(unsigned char BRG_mode, unsigned char BRG_divisor)
+
+{
+	volatile unsigned char dummy; // used to clear the hardware receive register
+	unsigned short bit_count;
+	volatile unsigned char l_spbrg@T_SPBRG;
+	volatile unsigned char l_txsta@T_TXSTA;
+	volatile unsigned char l_rcsta@T_RCSTA;
+	volatile unsigned char l_rcreg@T_RCREG;
+	volatile bit l_tx_tris@T_TX_TRIS.T_TX_BIT;
+	volatile bit l_rx_tris@T_RX_TRIS.T_RX_BIT;
+	volatile bit l_tx@T_TX_PORT.T_TX_BIT;
+	volatile bit l_cren@T_RCSTA.u_CREN;
+	volatile bit l_brgh@T_TXSTA.u_BRGH;
+		
+	if (T_MODE & USART_HW)
+
+	{
+		l_rx_tris = 1;
+0157  1683  	BSF STATUS, RP0
+0158  1787  	BSF UART_INIT_00000_1_l_rx_tris,7
+
+		l_tx_tris = 0;
+0159  1307  	BCF UART_INIT_00000_1_l_tx_tris,6
+
+
+		// setup the USART baud rate
+		 // configure the divisor 
+		 l_spbrg = BRG_divisor;
+015A  1283  	BCF STATUS, RP0
+015B  083C  	MOVF UART_INIT_00000_arg_BRG_divisor, W
+015C  1683  	BSF STATUS, RP0
+015D  0099  	MOVWF UART_INIT_00000_1_l_spbrg
+
+		 l_txsta = 0xa4; // enable transmit function
+015E  30A4  	MOVLW 0xA4
+015F  0098  	MOVWF UART_INIT_00000_1_l_txsta
+
+		  // 7   Async mode - don't care
+		  // 6   8 bit selection
+		  // 5   Enable TX
+		  // 4   SYNC - Async mode
+		  // 3   not implemented
+		  // 2   BRGH - high speed
+		  // 1-0 don't care 
+		
+		 // configure baud rate generator mode High vs Low speed
+		 if (BRG_mode)
+0160  1283  	BCF STATUS, RP0
+0161  08BB  	MOVF UART_INIT_00000_arg_BRG_mode, F
+0162  1903  	BTFSC STATUS,Z
+0163  2967  	GOTO	label15
+0167        label15
+
+		  l_brgh = 1;
+0164  1683  	BSF STATUS, RP0
+0165  1518  	BSF UART_INIT_00000_1_l_brgh,2
+
+		 else
+0166  2969  	GOTO	label16
+0169        label16
+
+		  l_brgh = 0;
+0167  1683  	BSF STATUS, RP0
+0168  1118  	BCF UART_INIT_00000_1_l_brgh,2
+
+
+		l_rcsta = 0xb0; // enable the USART receive logic
+0169  30B0  	MOVLW 0xB0
+016A  1283  	BCF STATUS, RP0
+016B  0098  	MOVWF UART_INIT_00000_1_l_rcsta
+
+			// 7   SPEN - Serial Port Enable
+			// 6   8 bit selection
+			// 5   Don't care
+			// 4   CREN - Enable continuous receive
+			// 3   disable address detection
+			// 2-0 don't care	
+	
+		l_cren = 0; // clear continous receive bit
+016C  1218  	BCF UART_INIT_00000_1_l_cren,4
+
+		l_cren = 1; // set continous receive bit
+016D  1618  	BSF UART_INIT_00000_1_l_cren,4
+
+		dummy = l_rcreg;
+016E  081A  	MOVF UART_INIT_00000_1_l_rcreg, W
+016F  00BD  	MOVWF UART_INIT_00000_1_dummy
+
+	}
+	else
+	{
+		if (T_MODE & USART_invert)
+			l_tx = 0; // inverted idle (stop) bit
+		else
+			l_tx = 1; // idle (stop) bit	
+
+		l_rx_tris = 1;
+		l_tx_tris = 0;
+		
+		for (bit_count = (-bit_time)/8; bit_count; bit_count++);		
+
+		// setup the USART baud rate
+		l_spbrg = BRG_divisor;
+		l_txsta = 0xa4; // enable transmit function
+		l_rcsta = 0x00; // enable the USART receive logic
+	
+	}
+}	
+0170  0008  	RETURN
+
+
+
+void gets(char *destination)
+{
+	while ((*destination++ = getc()) != 0x0d); // wait until tx register is empty
+		*--destination = 0;
+}
+
+
+void puts(char *source)
+
+{
+	while (*source != 0) // wait until tx register is empty
+0132        label13
+0132  1383  	BCF STATUS,IRP
+0133  183C  	BTFSC puts_00000_arg_source+D'1',0
+0134  1783  	BSF STATUS,IRP
+0135  083B  	MOVF puts_00000_arg_source, W
+0136  0084  	MOVWF FSR
+0137  0880  	MOVF INDF, F
+0138  1903  	BTFSC STATUS,Z
+0139  2946  	GOTO	label14
+0145  2932  	GOTO	label13
+0146        label14
+
+		putc(*source++);
+013A  1383  	BCF STATUS,IRP
+013B  183C  	BTFSC puts_00000_arg_source+D'1',0
+013C  1783  	BSF STATUS,IRP
+013D  083B  	MOVF puts_00000_arg_source, W
+013E  0084  	MOVWF FSR
+013F  0ABB  	INCF puts_00000_arg_source, F
+0140  1903  	BTFSC STATUS,Z
+0141  0ABC  	INCF puts_00000_arg_source+D'1', F
+0142  0800  	MOVF INDF, W
+0143  00E7  	MOVWF PUTC_00000_arg_tx_char
+0144  203F  	CALL PUTC_00000
+
+	putc(0x0d);
+0146  300D  	MOVLW 0x0D
+0147  00E7  	MOVWF PUTC_00000_arg_tx_char
+0148  203F  	CALL PUTC_00000
+
+	putc(0x0a);
+0149  300A  	MOVLW 0x0A
+014A  00E7  	MOVWF PUTC_00000_arg_tx_char
+014B  203F  	CALL PUTC_00000
+
+}	
+014C  0008  	RETURN
+
+
+void puts_(char *source, int tam)
+
+{
+	int i = 0; 
+0046  01E5  	CLRF puts__00000_1_i
+0047  01E6  	CLRF puts__00000_1_i+D'1'
+
+	for(i = 0; i< tam; i++ )
+0048  01E5  	CLRF puts__00000_1_i
+0049  01E6  	CLRF puts__00000_1_i+D'1'
+004A        label5
+004A  0866  	MOVF puts__00000_1_i+D'1', W
+004B  3A80  	XORLW 0x80
+004C  00E7  	MOVWF CompTempVar633
+004D  0864  	MOVF puts__00000_arg_tam+D'1', W
+004E  3A80  	XORLW 0x80
+004F  0267  	SUBWF CompTempVar633, W
+0050  1D03  	BTFSS STATUS,Z
+0051  2854  	GOTO	label6
+0052  0863  	MOVF puts__00000_arg_tam, W
+0053  0265  	SUBWF puts__00000_1_i, W
+0054        label6
+0054  1803  	BTFSC STATUS,C
+0061  0AE5  	INCF puts__00000_1_i, F
+0062  1903  	BTFSC STATUS,Z
+0063  0AE6  	INCF puts__00000_1_i+D'1', F
+0064  284A  	GOTO	label5
+
+		putc(*source++);	
+0056  1383  	BCF STATUS,IRP
+0057  1862  	BTFSC puts__00000_arg_source+D'1',0
+0058  1783  	BSF STATUS,IRP
+0059  0861  	MOVF puts__00000_arg_source, W
+005A  0084  	MOVWF FSR
+005B  0AE1  	INCF puts__00000_arg_source, F
+005C  1903  	BTFSC STATUS,Z
+005D  0AE2  	INCF puts__00000_arg_source+D'1', F
+005E  0800  	MOVF INDF, W
+005F  00E7  	MOVWF PUTC_00000_arg_tx_char
+0060  203F  	CALL PUTC_00000
+
+}	
+0055  0008  	RETURN
+
+}	
+#include <system.h>
+#include "eeprom.h"
+#include "Config.h"
+
+	
+char *p1=""; 
+03DB  01B6  	CLRF CompGblVar56
+03DC  3000  	MOVLW HIGH(CompGblVar56+D'0')
+03DD  00B7  	MOVWF CompGblVar57
+03DE  3036  	MOVLW LOW(CompGblVar56+D'0')
+03DF  00A0  	MOVWF gbl_p1
+03E0  0837  	MOVF CompGblVar57, W
+03E1  00A1  	MOVWF gbl_p1+D'1'
+
+short i = 0; 
+03E2  01A2  	CLRF gbl_i
+03E3  01A3  	CLRF gbl_i+D'1'
+
+char tam; 
+bit band;
+bool respTrama=false;  
+03E4  1038  	BCF gbl_respTrama,0
+
+bool respEEPROM=false; 
+03E5  10B8  	BCF gbl_respEEPROM,1
+
+void main()
+
+{
+
+adcon1 = 6; 
+02CC  3006  	MOVLW 0x06
+02CD  1683  	BSF STATUS, RP0
+02CE  1303  	BCF STATUS, RP1
+02CF  009F  	MOVWF gbl_adcon1
+
+
+
+
+/***/
+//configuracion de pines para calefactores. 
+tris_C1_0 = 0; 
+02D0  1006  	BCF gbl_trisb,0
+
+tris_C1_1 = 0; 
+02D1  1086  	BCF gbl_trisb,1
+
+tris_C2_0 = 0; 	
+02D2  1106  	BCF gbl_trisb,2
+
+tris_C2_1 = 0; 
+02D3  1186  	BCF gbl_trisb,3
+
+
+
+//pines para extractores 8
+tris_E1_0 = 0; 
+02D4  1208  	BCF gbl_trisd,4
+
+tris_E1_1 = 0;
+02D5  1288  	BCF gbl_trisd,5
+
+tris_E1_2 = 0; 
+02D6  1308  	BCF gbl_trisd,6
+
+tris_E1_3 = 0;
+02D7  1388  	BCF gbl_trisd,7
+
+
+tris_E2_0 = 0; 
+02D8  1008  	BCF gbl_trisd,0
+
+tris_E2_1 = 0;
+02D9  1088  	BCF gbl_trisd,1
+
+tris_E2_2 = 0; 
+02DA  1108  	BCF gbl_trisd,2
+
+tris_E2_3 = 0;
+02DB  1188  	BCF gbl_trisd,3
+
+
+//pines para Aire Acondicionado 4
+tris_AA_0 = 0; 
+02DC  1206  	BCF gbl_trisb,4
+
+tris_AA_1 = 0; 
+02DD  1286  	BCF gbl_trisb,5
+
+tris_AA_2 = 0; 
+02DE  1306  	BCF gbl_trisb,6
+
+tris_AA_3 = 0; 
+02DF  1386  	BCF gbl_trisb,7
+
+
+//pines para persiana
+tris_per_0 = 0; 
+02E0  1207  	BCF gbl_trisc,4
+
+tris_per_1 = 0; 
+02E1  1287  	BCF gbl_trisc,5
+
+
+//pines para bombillos
+tris_port_Bomb = 0; 
+02E2  0185  	CLRF gbl_trisa
+
+tris_port_Bomb6 = 0;
+02E3  1009  	BCF gbl_trise,0
+
+tris_port_Bomb7 = 0;  
+02E4  1089  	BCF gbl_trise,1
+
+
+//pin para led indicador de recepcion de trama
+tris_indRecTrama  = 0; 
+02E5  1107  	BCF gbl_trisc,2
+
+pin_indRecTrama = 0; 
+02E6  1283  	BCF STATUS, RP0
+02E7  1107  	BCF gbl_portc,2
+
+
+/***/
+
+ 
+	
+	porta = 0x00; 	
+02E8  0185  	CLRF gbl_porta
+
+	portb = 0; 
+02E9  0186  	CLRF gbl_portb
+
+
+	
+	char a = 0x0; 
+02EA  01B9  	CLRF main_1_a
+
+	bool x=false; 
+02EB  103A  	BCF main_1_x,0
+
+	uart_init(1,129);  // set high speed divisor mode and divisor value
+02EC  3001  	MOVLW 0x01
+02ED  00BB  	MOVWF UART_INIT_00000_arg_BRG_mode
+02EE  3081  	MOVLW 0x81
+02EF  00BC  	MOVWF UART_INIT_00000_arg_BRG_divisor
+02F0  2157  	CALL UART_INIT_00000
+
+	
+	
+	//delay_ms(10); 
+	//puts("Bienvenido a este programa \n"); 
+	puts("H1"); 
+02F1  3048  	MOVLW 0x48
+02F2  00BD  	MOVWF CompTempVar656
+02F3  3031  	MOVLW 0x31
+02F4  00BE  	MOVWF CompTempVar656+D'1'
+02F5  01BF  	CLRF CompTempVar656+D'2'
+02F6  3000  	MOVLW HIGH(CompTempVar656+D'0')
+02F7  00BC  	MOVWF puts_00000_arg_source+D'1'
+02F8  303D  	MOVLW LOW(CompTempVar656+D'0')
+02F9  00BB  	MOVWF puts_00000_arg_source
+02FA  2132  	CALL puts_00000
+
+	//ResetPuertos();
+	limpiarVariables(); 
+02FB  214D  	CALL limpiarVar_00017
+
+	while (1)
+02FC        label25
+03D7  2AFC  	GOTO	label25
+
+	{
+		
+		//portb = ESTADO; 
+		if (kbhit())
+02FC  209B  	CALL KBHIT_00000
+02FD  08BC  	MOVF CompTempVarRet632, F
+02FE  1903  	BTFSC STATUS,Z
+02FF  2AFC  	GOTO	label25
+
+		{
+			temp = getc(); 
+0300  22BF  	CALL GETC_00000
+0301  083C  	MOVF CompTempVarRet631, W
+0302  00B2  	MOVWF gbl_temp
+
+			//putc(temp);
+			UltValor = temp; 
+0303  0832  	MOVF gbl_temp, W
+0304  00AD  	MOVWF gbl_UltValor
+
+			
+			switch(ESTADO)
+			{
+				case INICIO:
+0305  082C  	MOVF gbl_ESTADO, W
+0306  3A00  	XORLW 0x00
+0307  1903  	BTFSC STATUS,Z
+0308  2B22  	GOTO	label26
+0322        label26
+
+					if((temp == 'P') || (temp == 'p'))
+0322  0832  	MOVF gbl_temp, W
+0323  3A50  	XORLW 0x50
+0324  1903  	BTFSC STATUS,Z
+0325  2B2A  	GOTO	label27
+0326  0832  	MOVF gbl_temp, W
+0327  3A70  	XORLW 0x70
+0328  1D03  	BTFSS STATUS,Z
+0329  2B2C  	GOTO	label28
+032A        label27
+032C        label28
+
+						ESTADO = CABECERA_P; 
+032A  3001  	MOVLW 0x01
+032B  00AC  	MOVWF gbl_ESTADO
+
+					//puts("Estado sig: CABECERA_P\n");
+					UltValor = temp; 
+032C  0832  	MOVF gbl_temp, W
+032D  00AD  	MOVWF gbl_UltValor
+
+					/*if((temp == 'x'))
+						setPuertos(); 
+					if((temp == 'r'))
+						ResetPuertos(); 
+					if((temp == 'A'))
+					{
+						AA = 15;  
+						setPuertos(); 
+					}
+					
+					if((temp=='b'))
+						{
+							port_Bomb = 0xFF; 
+							port_Bomb6 = 1; 
+							port_Bomb7 = 1; 
+						}
+					*/	
+					break; 
+032E  2AFC  	GOTO	label25
+
+					
+				case CABECERA_P:
+0309  3A01  	XORLW 0x01
+030A  1903  	BTFSC STATUS,Z
+030B  2B2F  	GOTO	label29
+032F        label29
+
+					if((temp == 'A') || (temp == 'a'))
+032F  0832  	MOVF gbl_temp, W
+0330  3A41  	XORLW 0x41
+0331  1903  	BTFSC STATUS,Z
+0332  2B37  	GOTO	label30
+0333  0832  	MOVF gbl_temp, W
+0334  3A61  	XORLW 0x61
+0335  1D03  	BTFSS STATUS,Z
+0336  2B3A  	GOTO	label31
+0337        label30
+033A        label31
+
+						ESTADO = CABECERA_A; 
+0337  3002  	MOVLW 0x02
+0338  00AC  	MOVWF gbl_ESTADO
+
+					else 
+0339  2AFC  	GOTO	label25
+
+						ESTADO = INICIO; 
+033A  01AC  	CLRF gbl_ESTADO
+
+						
+					//puts("Estado sig: CABECERA_A"); 
+				break; 
+033B  2AFC  	GOTO	label25
+
+					
+				case CABECERA_A:
+030C  3A03  	XORLW 0x03
+030D  1903  	BTFSC STATUS,Z
+030E  2B3C  	GOTO	label32
+033C        label32
+
+					LongTrama = temp; 					
+033C  0832  	MOVF gbl_temp, W
+033D  00AE  	MOVWF gbl_LongTrama
+
+					ESTADO = LONGITUD;
+033E  3003  	MOVLW 0x03
+033F  00AC  	MOVWF gbl_ESTADO
+
+					
+					//puts("Estado sig: Longitud");
+				break;  
+0340  2AFC  	GOTO	label25
+
+				
+				case LONGITUD: 
+030F  3A01  	XORLW 0x01
+0310  1903  	BTFSC STATUS,Z
+0311  2B41  	GOTO	label33
+0341        label33
+
+					Origen = temp; 
+0341  0832  	MOVF gbl_temp, W
+0342  00AF  	MOVWF gbl_Origen
+
+					ESTADO = ORIGEN; 
+0343  3004  	MOVLW 0x04
+0344  00AC  	MOVWF gbl_ESTADO
+
+					//puts("Estado sig: Origen");
+				break; 
+0345  2AFC  	GOTO	label25
+
+				
+				case ORIGEN: 
+0312  3A07  	XORLW 0x07
+0313  1903  	BTFSC STATUS,Z
+0314  2B46  	GOTO	label34
+0346        label34
+
+					Destino = temp; 
+0346  0832  	MOVF gbl_temp, W
+0347  00B0  	MOVWF gbl_Destino
+
+					if(Destino == DirHABITACION){
+0348  0830  	MOVF gbl_Destino, W
+0349  3A66  	XORLW 0x66
+034A  1D03  	BTFSS STATUS,Z
+034B  2B50  	GOTO	label35
+0350        label35
+
+						ESTADO = DESTINO; 
+034C  3005  	MOVLW 0x05
+034D  00AC  	MOVWF gbl_ESTADO
+
+						pin_indRecTrama = 1; 
+034E  1507  	BSF gbl_portc,2
+
+					}
+					else 
+034F  2AFC  	GOTO	label25
+
+					{
+						ESTADO = INICIO; 
+0350  01AC  	CLRF gbl_ESTADO
+
+						pin_indRecTrama = 0; 
+0351  1107  	BCF gbl_portc,2
+
+					}
+					//puts("Estado sig: Destino");
+					
+				break; 
+0352  2AFC  	GOTO	label25
+
+				
+				case DESTINO: 
+0315  3A01  	XORLW 0x01
+0316  1903  	BTFSC STATUS,Z
+0317  2B53  	GOTO	label36
+0353        label36
+
+					RegEstado = temp; 
+0353  0832  	MOVF gbl_temp, W
+0354  00AB  	MOVWF gbl_RegEstado
+
+					
+					if(RegEstado == 1)
+0355  032B  	DECF gbl_RegEstado, W
+0356  1D03  	BTFSS STATUS,Z
+0357  2B5A  	GOTO	label37
+035A        label37
+
+						respTrama = true;  
+0358  1438  	BSF gbl_respTrama,0
+
+					else												
+0359  2B5B  	GOTO	label38
+035B        label38
+
+						respTrama = false; 	
+035A  1038  	BCF gbl_respTrama,0
+
+					
+					if(RegEstado == 2)
+035B  082B  	MOVF gbl_RegEstado, W
+035C  3A02  	XORLW 0x02
+035D  1D03  	BTFSS STATUS,Z
+035E  2B61  	GOTO	label39
+0361        label39
+
+						respEEPROM = true; 
+035F  14B8  	BSF gbl_respEEPROM,1
+
+					else 
+0360  2B62  	GOTO	label40
+0362        label40
+
+						respEEPROM = false; 
+0361  10B8  	BCF gbl_respEEPROM,1
+
+					
+					ESTADO = vESTADO; 
+0362  3006  	MOVLW 0x06
+0363  00AC  	MOVWF gbl_ESTADO
+
+					//puts("Estado sig: vEstado");
+				break; 
+0364  2AFC  	GOTO	label25
+
+				
+				case vESTADO: 
+0318  3A03  	XORLW 0x03
+0319  1903  	BTFSC STATUS,Z
+031A  2B65  	GOTO	label41
+0365        label41
+
+					nom_temp = temp;
+0365  0832  	MOVF gbl_temp, W
+0366  00B3  	MOVWF gbl_nom_temp
+
+					nom_val = 1; 
+0367  3001  	MOVLW 0x01
+0368  00B1  	MOVWF gbl_nom_val
+
+														
+					if((temp == 'M') || (temp == 'm'))
+0369  0832  	MOVF gbl_temp, W
+036A  3A4D  	XORLW 0x4D
+036B  1903  	BTFSC STATUS,Z
+036C  2B71  	GOTO	label42
+036D  0832  	MOVF gbl_temp, W
+036E  3A6D  	XORLW 0x6D
+036F  1D03  	BTFSS STATUS,Z
+0370  2B74  	GOTO	label43
+0371        label42
+0374        label43
+
+						ESTADO = FIN_CAB_M;
+0371  3008  	MOVLW 0x08
+0372  00AC  	MOVWF gbl_ESTADO
+
+					else	
+0373  2AFC  	GOTO	label25
+
+						ESTADO = DISPOSITIVO; 
+0374  3007  	MOVLW 0x07
+0375  00AC  	MOVWF gbl_ESTADO
+
+					//puts("Estado sig: Dispositivo");
+				break;
+0376  2AFC  	GOTO	label25
+
+				
+				case DISPOSITIVO:
+031B  3A01  	XORLW 0x01
+031C  1903  	BTFSC STATUS,Z
+031D  2B77  	GOTO	label44
+0377        label44
+
+					if(nom_val==2)
+0377  0831  	MOVF gbl_nom_val, W
+0378  3A02  	XORLW 0x02
+0379  1D03  	BTFSS STATUS,Z
+037A  2B86  	GOTO	label45
+0386        label45
+
+					{
+						val_temp = temp; 
+037B  0832  	MOVF gbl_temp, W
+037C  00B5  	MOVWF gbl_val_temp
+
+						SetDispositivo(nom_temp,nom_temp_h,val_temp); 
+037D  0833  	MOVF gbl_nom_temp, W
+037E  00BB  	MOVWF SetDisposi_00015_arg_n1
+037F  0834  	MOVF gbl_nom_temp_h, W
+0380  00BC  	MOVWF SetDisposi_00015_arg_n2
+0381  0835  	MOVF gbl_val_temp, W
+0382  00BD  	MOVWF SetDisposi_00015_arg_val
+0383  2171  	CALL SetDisposi_00015
+
+						nom_val = 0; 
+0384  01B1  	CLRF gbl_nom_val
+
+					}
+					else if(nom_val == 1)
+0385  2B95  	GOTO	label47
+0386  0331  	DECF gbl_nom_val, W
+0387  1D03  	BTFSS STATUS,Z
+0388  2B8E  	GOTO	label46
+038E        label46
+
+						
+					{ 
+						nom_temp_h = temp;
+0389  0832  	MOVF gbl_temp, W
+038A  00B4  	MOVWF gbl_nom_temp_h
+
+						nom_val = 2; 
+038B  3002  	MOVLW 0x02
+038C  00B1  	MOVWF gbl_nom_val
+
+					}
+					else if(nom_val == 0)
+038D  2B95  	GOTO	label47
+038E  08B1  	MOVF gbl_nom_val, F
+038F  1D03  	BTFSS STATUS,Z
+0390  2B95  	GOTO	label47
+0395        label47
+
+					{
+						nom_temp = temp; 
+0391  0832  	MOVF gbl_temp, W
+0392  00B3  	MOVWF gbl_nom_temp
+
+						nom_val = 1; 
+0393  3001  	MOVLW 0x01
+0394  00B1  	MOVWF gbl_nom_val
+
+					}
+				
+					if((temp == 'M') || (temp == 'm'))
+0395  0832  	MOVF gbl_temp, W
+0396  3A4D  	XORLW 0x4D
+0397  1903  	BTFSC STATUS,Z
+0398  2B9D  	GOTO	label48
+0399  0832  	MOVF gbl_temp, W
+039A  3A6D  	XORLW 0x6D
+039B  1D03  	BTFSS STATUS,Z
+039C  2AFC  	GOTO	label25
+039D        label48
+
+						ESTADO = FIN_CAB_M;
+039D  3008  	MOVLW 0x08
+039E  00AC  	MOVWF gbl_ESTADO
+
+						//putc(temp); 
+						//puts("Estado: DISPOSITIVO"); 
+				break;
+039F  2AFC  	GOTO	label25
+
+				
+				case FIN_CAB_M:
+031E  3A0F  	XORLW 0x0F
+031F  1903  	BTFSC STATUS,Z
+0320  2BA0  	GOTO	label49
+03A0        label49
+
+					if((temp == 'R') || (temp == 'r'))
+03A0  0832  	MOVF gbl_temp, W
+03A1  3A52  	XORLW 0x52
+03A2  1903  	BTFSC STATUS,Z
+03A3  2BA8  	GOTO	label50
+03A4  0832  	MOVF gbl_temp, W
+03A5  3A72  	XORLW 0x72
+03A6  1D03  	BTFSS STATUS,Z
+03A7  2BB5  	GOTO	label53
+03A8        label50
+03B5        label53
+
+					{
+						setPuertos(); 
+03A8  20A5  	CALL setPuertos_00000
+
+						
+						if(respTrama)
+03A9  1C38  	BTFSS gbl_respTrama,0
+03AA  2BAE  	GOTO	label51
+03AE        label51
+
+							ResponderTrama(100); 
+03AB  3064  	MOVLW 0x64
+03AC  00BB  	MOVWF ResponderT_00018_arg_Destino
+03AD  21E2  	CALL ResponderT_00018
+
+						
+						if(respEEPROM)
+03AE  1CB8  	BTFSS gbl_respEEPROM,1
+03AF  2BB3  	GOTO	label52
+03B3        label52
+
+							ResponderEEPROM(100); 
+03B0  3064  	MOVLW 0x64
+03B1  00BB  	MOVWF ResponderE_00019_arg_Destino
+03B2  221B  	CALL ResponderE_00019
+
+							
+						ESTADO = INICIO; 
+03B3  01AC  	CLRF gbl_ESTADO
+
+					}
+					else 
+03B4  2AFC  	GOTO	label25
+
+					{
+					if(nom_val == 2)
+03B5  0831  	MOVF gbl_nom_val, W
+03B6  3A02  	XORLW 0x02
+03B7  1D03  	BTFSS STATUS,Z
+03B8  2BC4  	GOTO	label54
+03C4        label54
+
+					{
+						val_temp = temp; 
+03B9  0832  	MOVF gbl_temp, W
+03BA  00B5  	MOVWF gbl_val_temp
+
+						SetDispositivo(nom_temp,nom_temp_h,val_temp); 
+03BB  0833  	MOVF gbl_nom_temp, W
+03BC  00BB  	MOVWF SetDisposi_00015_arg_n1
+03BD  0834  	MOVF gbl_nom_temp_h, W
+03BE  00BC  	MOVWF SetDisposi_00015_arg_n2
+03BF  0835  	MOVF gbl_val_temp, W
+03C0  00BD  	MOVWF SetDisposi_00015_arg_val
+03C1  2171  	CALL SetDisposi_00015
+
+						nom_val = 0; 
+03C2  01B1  	CLRF gbl_nom_val
+
+					}
+					else if(nom_val == 1)
+03C3  2BD3  	GOTO	label56
+03C4  0331  	DECF gbl_nom_val, W
+03C5  1D03  	BTFSS STATUS,Z
+03C6  2BCC  	GOTO	label55
+03CC        label55
+
+						
+					{ 
+						nom_temp_h = temp;
+03C7  0832  	MOVF gbl_temp, W
+03C8  00B4  	MOVWF gbl_nom_temp_h
+
+						nom_val = 2; 
+03C9  3002  	MOVLW 0x02
+03CA  00B1  	MOVWF gbl_nom_val
+
+					}
+					else if(nom_val == 0)
+03CB  2BD3  	GOTO	label56
+03CC  08B1  	MOVF gbl_nom_val, F
+03CD  1D03  	BTFSS STATUS,Z
+03CE  2BD3  	GOTO	label56
+03D3        label56
+
+					{
+						nom_temp = temp; 
+03CF  0832  	MOVF gbl_temp, W
+03D0  00B3  	MOVWF gbl_nom_temp
+
+						nom_val = 1; 
+03D1  3001  	MOVLW 0x01
+03D2  00B1  	MOVWF gbl_nom_val
+
+					}
+				
+					
+						ESTADO = DISPOSITIVO; 
+03D3  3007  	MOVLW 0x07
+03D4  00AC  	MOVWF gbl_ESTADO
+
+					}							
+					
+					//puts("Estado: FIN_CAB_M");
+				break; 
+03D5  2AFC  	GOTO	label25
+
+				default: 					
+0321  2BD6  	GOTO	label57
+03D6        label57
+
+					ESTADO = INICIO; 
+03D6  01AC  	CLRF gbl_ESTADO
+
+				break; 
+			}//fin switch												
+		}// if (kbhit())
+	}//fin while(1)
+}
+
+
+////////////////////////////////////////
+// Code with no source :-)
+////////////////////////////////////////
+0000  2BD8  	GOTO	_startup
+
+0004        delay_ms_00000
+0004        ; { delay_ms ; function begin
+0004  08BC  	MOVF delay_ms_00000_arg_del, F
+0005  1D03  	BTFSS STATUS,Z
+0006  2808  	GOTO	label1
+0007  0008  	RETURN
+0008        label1
+0008  30F9  	MOVLW 0xF9
+0009        label2
+0009  0000  	NOP
+000A  0000  	NOP
+000B  0000  	NOP
+000C  0000  	NOP
+000D  0000  	NOP
+000E  0000  	NOP
+000F  0000  	NOP
+0010  0000  	NOP
+0011  0000  	NOP
+0012  0000  	NOP
+0013  0000  	NOP
+0014  0000  	NOP
+0015  0000  	NOP
+0016  0000  	NOP
+0017  0000  	NOP
+0018  0000  	NOP
+0019  3EFF  	ADDLW 0xFF
+001A  1D03  	BTFSS STATUS,Z
+001B  2809  	GOTO	label2
+001C  0000  	NOP
+001D  0000  	NOP
+001E  0000  	NOP
+001F  0000  	NOP
+0020  0000  	NOP
+0021  0000  	NOP
+0022  0000  	NOP
+0023  0000  	NOP
+0024  0000  	NOP
+0025  0000  	NOP
+0026  0000  	NOP
+0027  0000  	NOP
+0028  0000  	NOP
+0029  0000  	NOP
+002A  0000  	NOP
+002B  0000  	NOP
+002C  0000  	NOP
+002D  0BBC  	DECFSZ delay_ms_00000_arg_del, F
+002E  2808  	GOTO	label1
+002F  0008  	RETURN
+0030        ; } delay_ms function end
+
+0030        delay_s_00000
+0030        ; { delay_s ; function begin
+0030        label3
+0030  30FA  	MOVLW 0xFA
+0031  00BC  	MOVWF delay_ms_00000_arg_del
+0032  2004  	CALL delay_ms_00000
+0033  30FA  	MOVLW 0xFA
+0034  00BC  	MOVWF delay_ms_00000_arg_del
+0035  2004  	CALL delay_ms_00000
+0036  30FA  	MOVLW 0xFA
+0037  00BC  	MOVWF delay_ms_00000_arg_del
+0038  2004  	CALL delay_ms_00000
+0039  30FA  	MOVLW 0xFA
+003A  00BC  	MOVWF delay_ms_00000_arg_del
+003B  2004  	CALL delay_ms_00000
+003C  0BBB  	DECFSZ delay_s_00000_arg_del, F
+003D  2830  	GOTO	label3
+003E  0008  	RETURN
+003F        ; } delay_s function end
+
+
+0065        eeprom_wri_00012
+0065        ; { eeprom_write ; function begin
+0065        label7
+0065  1683  	BSF STATUS, RP0
+0066  1703  	BSF STATUS, RP1
+0067  188C  	BTFSC gbl_eecon1,1
+0068  2865  	GOTO	label7
+0069  1283  	BCF STATUS, RP0
+006A  1303  	BCF STATUS, RP1
+006B  083E  	MOVF eeprom_wri_00012_arg_address, W
+006C  1703  	BSF STATUS, RP1
+006D  008D  	MOVWF gbl_eeadr
+006E  1303  	BCF STATUS, RP1
+006F  083F  	MOVF eeprom_wri_00012_arg_data, W
+0070  1703  	BSF STATUS, RP1
+0071  008C  	MOVWF gbl_eedata
+0072  1683  	BSF STATUS, RP0
+0073  138C  	BCF gbl_eecon1,7
+0074  150C  	BSF gbl_eecon1,2
+0075  1283  	BCF STATUS, RP0
+0076  1303  	BCF STATUS, RP1
+0077  10BA  	BCF eeprom_wri_00012_1_intState,1
+0078  1B8B  	BTFSC gbl_intcon,7
+0079  14BA  	BSF eeprom_wri_00012_1_intState,1
+007A  138B  	BCF gbl_intcon,7
+007B  3055  	MOVLW 0x55
+007C  1683  	BSF STATUS, RP0
+007D  1703  	BSF STATUS, RP1
+007E  008D  	MOVWF gbl_eecon2
+007F  30AA  	MOVLW 0xAA
+0080  008D  	MOVWF gbl_eecon2
+0081  148C  	BSF gbl_eecon1,1
+0082  110C  	BCF gbl_eecon1,2
+0083  1283  	BCF STATUS, RP0
+0084  1303  	BCF STATUS, RP1
+0085  18BA  	BTFSC eeprom_wri_00012_1_intState,1
+0086  178B  	BSF gbl_intcon,7
+0087  1CBA  	BTFSS eeprom_wri_00012_1_intState,1
+0088  138B  	BCF gbl_intcon,7
+0089  0008  	RETURN
+008A        ; } eeprom_write function end
+
+008A        eeprom_rea_00011
+008A        ; { eeprom_read ; function begin
+008A        label8
+008A  1683  	BSF STATUS, RP0
+008B  1703  	BSF STATUS, RP1
+008C  188C  	BTFSC gbl_eecon1,1
+008D  288A  	GOTO	label8
+008E  1283  	BCF STATUS, RP0
+008F  1303  	BCF STATUS, RP1
+0090  083E  	MOVF eeprom_rea_00011_arg_address, W
+0091  1703  	BSF STATUS, RP1
+0092  008D  	MOVWF gbl_eeadr
+0093  1683  	BSF STATUS, RP0
+0094  138C  	BCF gbl_eecon1,7
+0095  140C  	BSF gbl_eecon1,0
+0096  1283  	BCF STATUS, RP0
+0097  080C  	MOVF gbl_eedata, W
+0098  1303  	BCF STATUS, RP1
+0099  00BF  	MOVWF CompTempVarRet658
+009A  0008  	RETURN
+009B        ; } eeprom_read function end
+
+
+03D8        _startup
+
+03E6  118A  	BCF PCLATH,3
+03E7  120A  	BCF PCLATH,4
+03E8  2ACC  	GOTO	main
+
+2007  3F32  	DW 0x3F32

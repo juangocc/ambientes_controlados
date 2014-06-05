@@ -1,0 +1,8 @@
+;; Object domotica
+;; EDE project file.
+(ede-proj-project "domotica"
+  :name "domotica"
+  :file "Project.ede"
+  :targets 'nil
+  :makefile-type 'Makefile.am
+  )

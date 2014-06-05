@@ -1,0 +1,22 @@
+// SourceBoost Linker Function Resource Usage Dump
+
+#GLOBAL:"global",line = 0,ram = 24.2,rom = 0;
+GETC(void):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 287,ram = 2.0,rom = 13;
+KBHIT(void):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 256,ram = 1.0,rom = 10;
+puts(unsigned char*):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 464,ram = 2.0,rom = 27;
+PUTC(unsigned char):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 335,ram = 2.0,rom = 7;
+puts_(unsigned char*,signed short):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 472,ram = 7.0,rom = 31;
+SetDispositivo(unsigned char,unsigned char,unsigned char):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\Config.h",line = 199,ram = 3.0,rom = 113;
+setPuertos(void):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\Config.h",line = 263,ram = 0.0,rom = 141;
+limpiarVariables(void):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\Config.h",line = 364,ram = 0.0,rom = 10;
+ResponderTrama(unsigned char):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\Config.h",line = 383,ram = 12.0,rom = 57;
+ResponderEEPROM(unsigned char):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\Config.h",line = 399,ram = 22.0,rom = 164;
+main(void):"C:\Users\Pablo Alejandro\Documents\Proyecto Ambientes Controlados 2011\Pruebas\FlashSerial\PruebaFlashSerial.c",line = 15,ram = 4.1,rom = 268;
+UART_INIT(unsigned char,unsigned char):"C:\Program Files\SourceBoost\include\rs232_driver.h",line = 399,ram = 3.0,rom = 26;
+eeprom_read(unsigned char):"E:\Prg\compiler.trunk\picantc\libc\eeprom\eeprom.c",line = 60,ram = 2.0,rom = 17;
+eeprom_write(unsigned char,unsigned char):"E:\Prg\compiler.trunk\picantc\libc\eeprom\eeprom.c",line = 77,ram = 2.1,rom = 37;
+delay_ms(unsigned char):"NoSourceFile",line = 0,ram = 0.0,rom = 44;
+delay_s(unsigned char):"NoSourceFile",line = 0,ram = 1.0,rom = 15;
+_startup(void):"NoSourceFile",line = 0,ram = 0.0,rom = 17;
+#HEAP_BLOCK: 0, 160, 96;
+#HEAP_BLOCK: 1, 105, 7;

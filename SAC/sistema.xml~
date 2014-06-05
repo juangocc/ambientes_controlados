@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sistema>
+	<habitacion nombre="102" id="102" idsensor="105" temperaturaIdeal="20" humedadIdeal="5" ventilacionIdeal="5" iluminacionIdeal="4" temperatura="35" humedad="99">
+		<dispositivos>
+			<dispositivo nombre="C1" tipo="Calefactor" estado="0"></dispositivo>
+			<dispositivo nombre="E1" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="E2" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="AA" tipo="AireAcondicionado" estado="0"></dispositivo>
+			<dispositivo nombre="P1" tipo="Persiana" estado="0"></dispositivo>
+			<dispositivo nombre="X1" tipo="Puerta" estado="0"></dispositivo>
+			<dispositivo nombre="BX" tipo="Bombillo" estado="255"></dispositivo>
+		</dispositivos>
+	</habitacion>
+	<habitacion nombre="103" id="103" idsensor="106" temperaturaIdeal="21" humedadIdeal="60" ventilacionIdeal="30" iluminacionIdeal="50" temperatura="17" humedad="51">
+		<dispositivos>
+			<dispositivo nombre="C1" tipo="Calefactor" estado="0"></dispositivo>
+			<dispositivo nombre="E1" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="E2" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="AA" tipo="AireAcondicionado" estado="0"></dispositivo>
+			<dispositivo nombre="P1" tipo="Persiana" estado="0"></dispositivo>
+			<dispositivo nombre="X1" tipo="Puerta" estado="0"></dispositivo>
+			<dispositivo nombre="BX" tipo="Bombillo" estado="255"></dispositivo>
+		</dispositivos>
+	</habitacion>
+	<habitacion nombre="104" id="104" idsensor="107" temperaturaIdeal="20" humedadIdeal="50" ventilacionIdeal="20" iluminacionIdeal="20" temperatura="17" humedad="51">
+		<dispositivos>
+			<dispositivo nombre="C1" tipo="Calefactor" estado="0"></dispositivo>
+			<dispositivo nombre="E1" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="E2" tipo="Extractor" estado="0"></dispositivo>
+			<dispositivo nombre="AA" tipo="AireAcondicionado" estado="0"></dispositivo>
+			<dispositivo nombre="P1" tipo="Persiana" estado="0"></dispositivo>
+			<dispositivo nombre="X1" tipo="Puerta" estado="0"></dispositivo>
+			<dispositivo nombre="BX" tipo="Bombillo" estado="255"></dispositivo>
+		</dispositivos>
+	</habitacion>
+</sistema>
