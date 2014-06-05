@@ -1,0 +1,363 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.13
+-- Dumped by pg_dump version 9.1.13
+-- Started on 2014-06-05 11:11:10 COT
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 169 (class 3079 OID 11644)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1897 (class 0 OID 0)
+-- Dependencies: 169
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 162 (class 1259 OID 18295)
+-- Dependencies: 5
+-- Name: dispositivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE dispositivo (
+    id numeric NOT NULL,
+    nombre character varying,
+    estado character varying,
+    tipo character varying,
+    descripcion text,
+    id_hab numeric
+);
+
+
+ALTER TABLE public.dispositivo OWNER TO postgres;
+
+--
+-- TOC entry 161 (class 1259 OID 18287)
+-- Dependencies: 5
+-- Name: habitacion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE habitacion (
+    id numeric NOT NULL,
+    descripcion text,
+    idsensor numeric,
+    temp_ideal numeric,
+    ilum_ideal numeric,
+    ventil_ideal numeric,
+    humedad_ideal numeric
+);
+
+
+ALTER TABLE public.habitacion OWNER TO postgres;
+
+--
+-- TOC entry 165 (class 1259 OID 18313)
+-- Dependencies: 5
+-- Name: historico_habitacion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE historico_habitacion (
+    id numeric NOT NULL,
+    id_hab numeric,
+    temperatura numeric,
+    ventilacion numeric,
+    iluminacion numeric,
+    humedad numeric,
+    fecha timestamp without time zone
+);
+
+
+ALTER TABLE public.historico_habitacion OWNER TO postgres;
+
+--
+-- TOC entry 163 (class 1259 OID 18303)
+-- Dependencies: 5
+-- Name: horario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE horario (
+    id numeric NOT NULL,
+    hora numeric,
+    tipo character varying,
+    id_nombre_disp character varying
+);
+
+
+ALTER TABLE public.horario OWNER TO postgres;
+
+--
+-- TOC entry 166 (class 1259 OID 18321)
+-- Dependencies: 5
+-- Name: seq_id_dispositivo; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_id_dispositivo
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_id_dispositivo OWNER TO postgres;
+
+--
+-- TOC entry 164 (class 1259 OID 18311)
+-- Dependencies: 5
+-- Name: seq_id_habitacion; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_id_habitacion
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_id_habitacion OWNER TO postgres;
+
+--
+-- TOC entry 167 (class 1259 OID 18323)
+-- Dependencies: 5
+-- Name: seq_id_historico_habitacion; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_id_historico_habitacion
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_id_historico_habitacion OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 18325)
+-- Dependencies: 5
+-- Name: seq_id_horario; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_id_horario
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_id_horario OWNER TO postgres;
+
+--
+-- TOC entry 1883 (class 0 OID 18295)
+-- Dependencies: 162 1890
+-- Data for Name: dispositivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY dispositivo (id, nombre, estado, tipo, descripcion, id_hab) FROM stdin;
+1	C1	apagado	calentador	dispositivo 1	105
+2	P1	apagado	persiana	dispositivo 2	105
+3	B1	apagado	bombillo	dispositivo 3	106
+4	C2	apagado	calentador	dispositivo 4	106
+5	P2	apagado	persiana	dispositivo 5	107
+6	A1	apagado	aire acondicionado	dispositivo 6	107
+\.
+
+
+--
+-- TOC entry 1882 (class 0 OID 18287)
+-- Dependencies: 161 1890
+-- Data for Name: habitacion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY habitacion (id, descripcion, idsensor, temp_ideal, ilum_ideal, ventil_ideal, humedad_ideal) FROM stdin;
+1	habitacion 1	105	25	100	10	10
+2	habitacion 2	106	25	100	10	10
+3	habitacion 3	107	25	100	10	10
+\.
+
+
+--
+-- TOC entry 1886 (class 0 OID 18313)
+-- Dependencies: 165 1890
+-- Data for Name: historico_habitacion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY historico_habitacion (id, id_hab, temperatura, ventilacion, iluminacion, humedad, fecha) FROM stdin;
+1	100	-39.620000000000005	0	0	0.0	\N
+2	100	-39.620000000000005	0	0	0.0	\N
+3	100	-39.620000000000005	0	0	0.0	\N
+4	100	-39.620000000000005	0	0	0.0	\N
+5	100	-39.620000000000005	0	0	0.0	\N
+6	100	-39.620000000000005	0	0	0.0	\N
+7	100	-39.620000000000005	0	0	0.0	\N
+8	100	-39.620000000000005	0	0	0.0	\N
+9	100	-39.620000000000005	0	0	0.0	\N
+10	100	-39.620000000000005	0	0	0.0	\N
+11	100	-39.620000000000005	0	0	0.0	2014-04-18 16:15:07.217176
+12	100	-39.620000000000005	0	0	0.0	2014-04-18 16:15:08.257235
+13	100	-39.620000000000005	0	0	0.0	2014-04-18 16:15:09.270232
+14	100	-39.620000000000005	0	0	0.0	2014-04-18 16:15:10.324724
+15	100	-39.620000000000005	0	0	0.0	2014-04-18 16:15:11.338938
+16	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:18.277205
+17	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:19.314108
+18	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:20.34389
+19	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:21.360539
+20	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:22.406242
+21	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:23.426202
+22	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:24.441144
+23	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:25.465466
+24	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:26.485001
+25	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:27.551177
+26	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:28.572609
+27	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:29.598168
+28	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:30.628312
+29	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:31.652353
+30	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:32.681351
+31	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:33.701478
+32	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:34.724434
+33	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:35.742736
+34	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:36.774912
+35	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:37.833416
+36	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:38.864869
+37	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:39.901982
+38	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:40.920756
+39	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:41.947499
+40	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:43.021599
+41	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:44.065816
+42	100	-39.620000000000005	0	0	0.0	2014-04-18 16:18:45.102027
+43	100	-39.620000000000005	0	0	0.0	2014-04-18 16:31:55.635832
+\.
+
+
+--
+-- TOC entry 1884 (class 0 OID 18303)
+-- Dependencies: 163 1890
+-- Data for Name: horario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY horario (id, hora, tipo, id_nombre_disp) FROM stdin;
+1	1626	apagar	C1
+2	1826	prender	C1
+3	1626	subir	P1
+4	1626	bajar	P1
+\.
+
+
+--
+-- TOC entry 1898 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: seq_id_dispositivo; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_id_dispositivo', 6, true);
+
+
+--
+-- TOC entry 1899 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: seq_id_habitacion; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_id_habitacion', 3, true);
+
+
+--
+-- TOC entry 1900 (class 0 OID 0)
+-- Dependencies: 167
+-- Name: seq_id_historico_habitacion; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_id_historico_habitacion', 43, true);
+
+
+--
+-- TOC entry 1901 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: seq_id_horario; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seq_id_horario', 4, true);
+
+
+--
+-- TOC entry 1780 (class 2606 OID 18320)
+-- Dependencies: 165 165 1891
+-- Name: id_hist_temp; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY historico_habitacion
+    ADD CONSTRAINT id_hist_temp PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1776 (class 2606 OID 18302)
+-- Dependencies: 162 162 1891
+-- Name: id_pk_disp; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY dispositivo
+    ADD CONSTRAINT id_pk_disp PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1774 (class 2606 OID 18294)
+-- Dependencies: 161 161 1891
+-- Name: id_pk_hab; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY habitacion
+    ADD CONSTRAINT id_pk_hab PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1778 (class 2606 OID 18310)
+-- Dependencies: 163 163 1891
+-- Name: id_pk_hor; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY horario
+    ADD CONSTRAINT id_pk_hor PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1896 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-06-05 11:11:10 COT
+
+--
+-- PostgreSQL database dump complete
+--
+
